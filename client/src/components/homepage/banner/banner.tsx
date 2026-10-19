@@ -19,7 +19,7 @@ const BannerSection = () => {
       `}
             </style>
 
-            <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gray-50 px-4 pb-16 pt-24 sm:px-6 sm:pb-20 lg:px-8 dark:bg-gray-950">
+            <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gray-50 px-4 pb-16 pt-24 sm:px-6 sm:pb-20 lg:px-8 dark:bg-[#0F172A]">
                 {/* Decorative grid pattern */}
                 <div
                     aria-hidden="true"

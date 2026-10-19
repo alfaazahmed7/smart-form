@@ -122,8 +122,8 @@ export default function Navbar() {
       <div
         className={`border-b transition-all duration-300 ease-out ${
           scrolled || open
-            ? "border-gray-200/80 dark:border-gray-800/80 bg-white/80 dark:bg-gray-950/80 shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.10)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_8px_24px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl"
-            : "border-transparent bg-transparent shadow-none"
+            ? "border-gray-200/80 dark:border-gray-800/80 bg-white/80 dark:bg-[#0F172A] shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.10)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_8px_24px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl"
+            : "border-transparent bg-transparent shadow-none dark:bg-[#0F172A]"
         }`}
       >
         <nav

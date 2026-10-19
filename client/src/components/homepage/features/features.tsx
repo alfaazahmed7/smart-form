@@ -1,4 +1,3 @@
-import React from 'react';
 import { LuCode, LuInbox, LuListChecks, LuMessageSquare, LuSend, LuSlidersHorizontal } from 'react-icons/lu';
 
 const FEATURES = [
@@ -40,7 +39,7 @@ const FEATURES = [
     },
 ];
 
-const FeaturesSections = () => {
+const FeaturesSection = () => {
     return (
         <div>
             <style>{`
@@ -59,7 +58,7 @@ const FeaturesSections = () => {
 
             <section
                 id="features"
-                className="relative bg-white px-4 py-24 sm:px-6 sm:py-28 lg:px-8 dark:bg-gray-950"
+                className="relative bg-white px-4 py-24 sm:px-6 sm:py-28 lg:px-8 dark:bg-[#0F172A]"
             >
                 <div className="mx-auto max-w-7xl">
                     {/* Section header */}
@@ -102,4 +101,4 @@ const FeaturesSections = () => {
     );
 };
 
-export default FeaturesSections;
+export default FeaturesSection;
