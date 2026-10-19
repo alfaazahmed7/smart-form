@@ -17,7 +17,7 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact", id: "contact" },
 ] as const;
 
-function Logo() {
+export function Logo() {
   return (
     <Link
       href="/"

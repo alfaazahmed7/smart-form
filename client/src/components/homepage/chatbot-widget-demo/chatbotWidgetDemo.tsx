@@ -169,7 +169,7 @@ const ChatbotWidgetDemo = () => {
         }
       `}</style>
 
-            <section className="bg-white px-4 py-24 sm:px-6 sm:py-28 lg:px-8 dark:bg-[#0F172A]">
+            <section id="chatbot-widget-demo" className="bg-white px-4 py-24 sm:px-6 sm:py-28 lg:px-8 dark:bg-[#0F172A]">
                 <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
                     {/* Copy */}
                     <div className="sf-fade-up max-w-xl">
