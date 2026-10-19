@@ -1,4 +1,5 @@
 import React from 'react';
+import { LuArrowRight, LuCheck } from 'react-icons/lu';
 
 const BannerSection = () => {
     return (
@@ -72,19 +73,10 @@ const BannerSection = () => {
                             className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition-all duration-200 hover:bg-indigo-500 hover:shadow-md hover:shadow-indigo-600/30 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 sm:w-auto dark:bg-indigo-500 dark:shadow-indigo-500/25 dark:hover:bg-indigo-400 dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-gray-950"
                         >
                             Get Started
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
+                            <LuArrowRight
                                 aria-hidden="true"
                                 className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                            >
-                                <path d="M5 12h14" />
-                                <path d="m12 5 7 7-7 7" />
-                            </svg>
+                            />
                         </a>
                         <a
                             href="#features"
@@ -100,21 +92,15 @@ const BannerSection = () => {
                         style={{ animationDelay: "320ms" }}
                     >
                         <span className="inline-flex items-center gap-1.5">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg>
+                            <LuCheck aria-hidden="true" className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
                             Free plan available
                         </span>
                         <span className="inline-flex items-center gap-1.5">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg>
+                            <LuCheck aria-hidden="true" className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
                             No credit card required
                         </span>
                         <span className="inline-flex items-center gap-1.5">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400">
-                                <path d="M20 6 9 17l-5-5" />
-                            </svg>
+                            <LuCheck aria-hidden="true" className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
                             Setup in minutes
                         </span>
                     </p>

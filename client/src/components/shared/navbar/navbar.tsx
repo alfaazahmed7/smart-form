@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { LuListChecks, LuMoon, LuSun } from "react-icons/lu";
 import { useEffect, useState, useSyncExternalStore } from "react";
 
 /* Hydration-safe "mounted" detection (no setState in effect) */
@@ -24,21 +25,7 @@ function Logo() {
       aria-label="SmartForm home"
     >
       <span className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-600 dark:bg-indigo-500 text-white shadow-sm shadow-indigo-600/25 dark:shadow-indigo-500/25 transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-indigo-600/30 dark:group-hover:shadow-indigo-500/30">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-4 w-4"
-          aria-hidden="true"
-        >
-          <path d="M4 6h16" />
-          <path d="M4 12h10" />
-          <path d="M4 18h7" />
-          <path d="m17 14 3 3-3 3" />
-        </svg>
+        <LuListChecks className="h-4 w-4" aria-hidden="true" />
       </span>
       <span className="text-[15px] font-semibold tracking-tight text-gray-900 dark:text-white">
         Smart
@@ -63,42 +50,18 @@ function ThemeToggle() {
       aria-label={mounted ? `Switch to ${isDark ? "light" : "dark"} mode` : "Toggle theme"}
       className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-300 shadow-sm transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950"
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+      <LuSun
         aria-hidden="true"
         className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
           isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
         }`}
-      >
-        <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2" />
-        <path d="M12 20v2" />
-        <path d="m4.93 4.93 1.41 1.41" />
-        <path d="m17.66 17.66 1.41 1.41" />
-        <path d="M2 12h2" />
-        <path d="M20 12h2" />
-        <path d="m6.34 17.66-1.41 1.41" />
-        <path d="m19.07 4.93-1.41 1.41" />
-      </svg>
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+      />
+      <LuMoon
         aria-hidden="true"
         className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
           isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
         }`}
-      >
-        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-      </svg>
+      />
       <span className="sr-only">Toggle theme</span>
     </button>
   );
