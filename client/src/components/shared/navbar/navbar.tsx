@@ -169,7 +169,7 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Link
-              href="#login"
+              href="/sign-in"
               className="inline-flex h-9 items-center justify-center rounded-lg bg-indigo-600 dark:bg-indigo-500 px-4 text-sm font-medium text-white shadow-sm shadow-indigo-600/25 dark:shadow-indigo-500/25 transition-all duration-200 hover:bg-indigo-500 dark:hover:bg-indigo-400 hover:shadow-md hover:shadow-indigo-600/30 dark:hover:shadow-indigo-500/30 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950"
             >
               Login
