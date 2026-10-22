@@ -1,20 +1,17 @@
-"use client";
+﻿"use client";
 
-import { useSyncExternalStore, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
+import { useSyncExternalStore, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useTheme } from "next-themes";
 import { FcGoogle } from "react-icons/fc";
 import { LuArrowRight, LuCheck, LuEye, LuEyeOff, LuShieldCheck, LuSparkles, LuZap } from "react-icons/lu";
 import { Logo } from "@/components/shared/navbar/navbar";
 
-/* ------------------------------------------------------------------ */
-/* Types & constants                                                   */
-/* ------------------------------------------------------------------ */
+// Types & constants   
 
-type Mode = "signup" | "signin";
-type FormData = { name: string; email: string; password: string };
-type FormErrors = Partial<Record<keyof FormData, string>>;
+type FormValues = { name: string; email: string; password: string };
+type FormErrors = Partial<Record<keyof FormValues, string>>;
 
-const EMPTY_FORM: FormData = { name: "", email: "", password: "" };
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /* Verified, publicly accessible Unsplash photo (modern analytics dashboard). */
@@ -29,14 +26,12 @@ const STATS = [
   { value: "4.9/5", label: "Avg. rating" },
 ] as const;
 
-/* ------------------------------------------------------------------ */
-/* Validation                                                          */
-/* ------------------------------------------------------------------ */
+// Validation
 
-function validate(mode: Mode, data: FormData): FormErrors {
+function validate(data: FormValues): FormErrors {
   const errors: FormErrors = {};
 
-  if (mode === "signup" && !data.name.trim()) {
+  if (!data.name.trim()) {
     errors.name = "Please enter your name.";
   }
 
@@ -55,133 +50,33 @@ function validate(mode: Mode, data: FormData): FormErrors {
   return errors;
 }
 
-/* ------------------------------------------------------------------ */
-/* Theme toggle (same hydration-safe pattern as the navbar)            */
-/* ------------------------------------------------------------------ */
-
+/* Hydration-safe "mounted" detection (no setState in an effect). */
 const emptySubscribe = () => () => {};
 const getIsClient = () => true;
 const getIsServer = () => false;
 
-function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const mounted = useSyncExternalStore(emptySubscribe, getIsClient, getIsServer);
-  const isDark = mounted && resolvedTheme === "dark";
-
-  return (
-    <button
-      type="button"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      aria-label={mounted ? `Switch to ${isDark ? "light" : "dark"} mode` : "Toggle theme"}
-      className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-300 shadow-sm transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A]"
-    >
-      <LuSparkles
-        aria-hidden="true"
-        className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
-          isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
-        }`}
-      />
-      <LuZap
-        aria-hidden="true"
-        className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
-          isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
-        }`}
-      />
-      <span className="sr-only">Toggle theme</span>
-    </button>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Text field                                                          */
-/* ------------------------------------------------------------------ */
-
-interface TextFieldProps {
-  id: string;
-  label: string;
-  type: string;
-  value: string;
-  placeholder: string;
-  autoComplete: string;
-  error?: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  trailing?: ReactNode;
-}
-
-function TextField({
-  id,
-  label,
-  type,
-  value,
-  placeholder,
-  autoComplete,
-  error,
-  onChange,
-  trailing,
-}: TextFieldProps) {
-  return (
-    <div>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-gray-900 dark:text-gray-100">
-        {label}
-      </label>
-      <div className="relative">
-        <input
-          id={id}
-          name={id}
-          type={type}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          autoComplete={autoComplete}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? `${id}-error` : undefined}
-          className={`w-full rounded-xl border px-4 py-2.5 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${
-            error
-              ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
-              : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
-          } ${trailing ? "pr-11" : ""}`}
-        />
-        {trailing ? <div className="absolute inset-y-0 right-0 flex items-center pr-3">{trailing}</div> : null}
-      </div>
-      {error ? (
-        <p id={`${id}-error`} role="alert" className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400">
-          {error}
-        </p>
-      ) : null}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Page                                                                */
-/* ------------------------------------------------------------------ */
+// Page  
 
 export default function SignUpPage() {
-  const [mode, setMode] = useState<Mode>("signup");
-  const [formData, setFormData] = useState<FormData>(EMPTY_FORM);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const isSignUp = mode === "signup";
-
-  const updateField = (field: keyof FormData) => (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
-    setSubmitted(false);
-  };
-
-  const switchMode = (next: Mode) => {
-    setMode(next);
-    setErrors({});
-    setSubmitted(false);
-    setShowPassword(false);
-  };
+  /* Theme state (hydration-safe, same pattern as the navbar) */
+  const { resolvedTheme, setTheme } = useTheme();
+  const mounted = useSyncExternalStore(emptySubscribe, getIsClient, getIsServer);
+  const isDark = mounted && resolvedTheme === "dark";
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const nextErrors = validate(mode, formData);
+
+    /* Gather the current field values for validation and logging. */
+    const values: FormValues = { name: fullName, email, password };
+
+    const nextErrors = validate(values);
     setErrors(nextErrors);
 
     if (Object.values(nextErrors).some(Boolean)) {
@@ -190,25 +85,9 @@ export default function SignUpPage() {
     }
 
     /* Demo only — no API calls. Logged so the collected values can be inspected. */
-    console.log("formData", formData);
+    console.log("formData", values);
     setSubmitted(true);
   };
-
-  const passwordToggle = (
-    <button
-      type="button"
-      onClick={() => setShowPassword((value) => !value)}
-      aria-label={showPassword ? "Hide password" : "Show password"}
-      aria-pressed={showPassword}
-      className="inline-flex h-7 w-7 items-center justify-center rounded-md text-gray-400 transition hover:text-gray-700 dark:hover:text-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
-    >
-      {showPassword ? (
-        <LuEyeOff className="h-4 w-4" aria-hidden="true" />
-      ) : (
-        <LuEye className="h-4 w-4" aria-hidden="true" />
-      )}
-    </button>
-  );
 
   return (
     <div className="flex min-h-[calc(100dvh_-_65px)] w-full flex-col bg-gray-100 dark:bg-[#080B14] sm:p-4 lg:p-4">
@@ -280,58 +159,181 @@ export default function SignUpPage() {
         <main className="relative flex min-h-0 flex-1 flex-col bg-white dark:bg-[#0F172A]">
           <div className="flex items-center justify-between px-6 pt-6 sm:px-10 lg:px-14 lg:pt-2">
             <Logo />
-            <ThemeToggle />
+            {/* Theme toggle (inline, no shared component) */}
+            <button
+              type="button"
+              onClick={() => setTheme(isDark ? "light" : "dark")}
+              aria-label={mounted ? `Switch to ${isDark ? "light" : "dark"} mode` : "Toggle theme"}
+              className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-300 shadow-sm transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A]"
+            >
+              <LuSparkles
+                aria-hidden="true"
+                className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
+                  isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+                }`}
+              />
+              <LuZap
+                aria-hidden="true"
+                className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
+                  isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
+                }`}
+              />
+              <span className="sr-only">Toggle theme</span>
+            </button>
           </div>
 
           <div className="flex min-h-0 flex-1 justify-center px-6 py-8 sm:px-10 sm:py-2 lg:overflow-y-auto lg:px-14">
-            <div key={mode} className="sf-enter m-auto w-full max-w-md">
+            <div className="sf-enter m-auto w-full max-w-md">
               <div className="space-y-1.5">
                 <h2 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-[1.75rem]">
-                  {isSignUp ? "Create your account" : "Welcome back"}
+                  Create your account
                 </h2>
                 <p className="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
-                  {isSignUp
-                    ? "Start building interactive forms in minutes. Free to try, no credit card required."
-                    : "Sign in to continue building forms and reviewing responses."}
+                  Start building interactive forms in minutes. Free to try, no credit card required.
                 </p>
               </div>
 
               <form noValidate onSubmit={handleSubmit} className="mt-3 space-y-2.5">
-                {isSignUp ? (
-                  <TextField
-                    id="name"
-                    label="Full name"
-                    type="text"
-                    value={formData.name}
-                    onChange={updateField("name")}
-                    placeholder="Ada Lovelace"
-                    autoComplete="name"
-                    error={errors.name}
-                  />
-                ) : null}
+                {/* Full name */}
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="mb-1.5 block text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >
+                    Full name
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => {
+                        setFullName(e.target.value);
+                        setErrors((prev) => (prev.name ? { ...prev, name: undefined } : prev));
+                        setSubmitted(false);
+                      }}
+                      placeholder="Ada Lovelace"
+                      autoComplete="name"
+                      aria-invalid={errors.name ? true : undefined}
+                      aria-describedby={errors.name ? "name-error" : undefined}
+                      className={`w-full rounded-xl border px-4 py-2.5 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${
+                        errors.name
+                          ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
+                          : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
+                      }`}
+                    />
+                  </div>
+                  {errors.name ? (
+                    <p
+                      id="name-error"
+                      role="alert"
+                      className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400"
+                    >
+                      {errors.name}
+                    </p>
+                  ) : null}
+                </div>
 
-                <TextField
-                  id="email"
-                  label="Email address"
-                  type="email"
-                  value={formData.email}
-                  onChange={updateField("email")}
-                  placeholder="you@company.com"
-                  autoComplete="email"
-                  error={errors.email}
-                />
+                {/* Email address */}
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="mb-1.5 block text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >
+                    Email address
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setErrors((prev) => (prev.email ? { ...prev, email: undefined } : prev));
+                        setSubmitted(false);
+                      }}
+                      placeholder="you@company.com"
+                      autoComplete="email"
+                      aria-invalid={errors.email ? true : undefined}
+                      aria-describedby={errors.email ? "email-error" : undefined}
+                      className={`w-full rounded-xl border px-4 py-2.5 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${
+                        errors.email
+                          ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
+                          : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
+                      }`}
+                    />
+                  </div>
+                  {errors.email ? (
+                    <p
+                      id="email-error"
+                      role="alert"
+                      className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400"
+                    >
+                      {errors.email}
+                    </p>
+                  ) : null}
+                </div>
 
-                <TextField
-                  id="password"
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  value={formData.password}
-                  onChange={updateField("password")}
-                  placeholder={isSignUp ? "At least 8 characters" : "Enter your password"}
-                  autoComplete={isSignUp ? "new-password" : "current-password"}
-                  error={errors.password}
-                  trailing={passwordToggle}
-                />
+                {/* Password */}
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="mb-1.5 block text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setErrors((prev) =>
+                          prev.password ? { ...prev, password: undefined } : prev
+                        );
+                        setSubmitted(false);
+                      }}
+                      placeholder="At least 8 characters"
+                      autoComplete="new-password"
+                      aria-invalid={errors.password ? true : undefined}
+                      aria-describedby={errors.password ? "password-error" : undefined}
+                      className={`w-full rounded-xl border px-4 py-2.5 pr-11 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${
+                        errors.password
+                          ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
+                          : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
+                      }`}
+                    />
+                    {/* Show / hide password */}
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((value) => !value)}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        aria-pressed={showPassword}
+                        className="inline-flex h-7 w-7 items-center justify-center rounded-md text-gray-400 transition hover:text-gray-700 dark:hover:text-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
+                      >
+                        {showPassword ? (
+                          <LuEyeOff className="h-4 w-4" aria-hidden="true" />
+                        ) : (
+                          <LuEye className="h-4 w-4" aria-hidden="true" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                  {errors.password ? (
+                    <p
+                      id="password-error"
+                      role="alert"
+                      className="mt-1.5 text-xs font-medium text-red-600 dark:text-red-400"
+                    >
+                      {errors.password}
+                    </p>
+                  ) : null}
+                </div>
 
                 {submitted ? (
                   <p
@@ -347,7 +349,7 @@ export default function SignUpPage() {
                   type="submit"
                   className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 transition duration-200 hover:bg-indigo-500 hover:shadow-indigo-500/30 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
                 >
-                  {isSignUp ? "Create account" : "Sign in"}
+                  Create account
                   <LuArrowRight
                     className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
                     aria-hidden="true"
@@ -370,18 +372,17 @@ export default function SignUpPage() {
                 </button>
 
                 <p className="pt-1 text-center text-sm text-gray-600 dark:text-gray-400">
-                  {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
-                  <button
-                    type="button"
-                    onClick={() => switchMode(isSignUp ? "signin" : "signup")}
+                  Already have an account?{" "}
+                  <Link
+                    href="/sign-in"
                     className="rounded font-semibold text-indigo-600 underline-offset-4 transition hover:text-indigo-500 hover:underline dark:text-indigo-400 dark:hover:text-indigo-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
                   >
-                    {isSignUp ? "Sign in" : "Sign up"}
-                  </button>
+                    Sign in
+                  </Link>
                 </p>
 
                 <p className="text-center text-xs leading-relaxed text-gray-400 dark:text-gray-500">
-                  By {isSignUp ? "creating an account" : "signing in"}, you agree to our{" "}
+                  By creating an account, you agree to our{" "}
                   <span className="underline underline-offset-2">Terms of Service</span> and{" "}
                   <span className="underline underline-offset-2">Privacy Policy</span>.
                 </p>

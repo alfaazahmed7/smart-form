@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { LuArrowRight, LuCheck } from 'react-icons/lu';
 
 const BannerSection = () => {
@@ -68,8 +69,8 @@ const BannerSection = () => {
                         className="sf-fade-up mt-9 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center"
                         style={{ animationDelay: "240ms" }}
                     >
-                        <a
-                            href="#login"
+                        <Link
+                            href="/sign-up"
                             className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition-all duration-200 hover:bg-indigo-500 hover:shadow-md hover:shadow-indigo-600/30 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 sm:w-auto dark:bg-indigo-500 dark:shadow-indigo-500/25 dark:hover:bg-indigo-400 dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-gray-950"
                         >
                             Get Started
@@ -77,7 +78,7 @@ const BannerSection = () => {
                                 aria-hidden="true"
                                 className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
                             />
-                        </a>
+                        </Link>
                         <a
                             href="#features"
                             className="inline-flex h-12 w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-6 text-sm font-semibold text-gray-900 shadow-sm transition-all duration-200 hover:bg-gray-100 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 sm:w-auto dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800 dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-gray-950"
