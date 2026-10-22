@@ -1,5 +1,3 @@
-const baseUrl = process.env.NEXT_PUBLIC_URL;
-
 interface UserData {
     name: string;
     email: string;
