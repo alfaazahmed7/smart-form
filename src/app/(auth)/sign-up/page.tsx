@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { FcGoogle } from "react-icons/fc";
 import { LuArrowRight, LuCheck, LuEye, LuEyeOff, LuShieldCheck, LuSparkles, LuZap } from "react-icons/lu";
 import { Logo } from "@/components/shared/navbar/navbar";
+import { addUser } from "@/services/auth.services";
 
 // Types & constants   
 
@@ -51,7 +52,7 @@ function validate(data: FormValues): FormErrors {
 }
 
 /* Hydration-safe "mounted" detection (no setState in an effect). */
-const emptySubscribe = () => () => {};
+const emptySubscribe = () => () => { };
 const getIsClient = () => true;
 const getIsServer = () => false;
 
@@ -70,13 +71,13 @@ export default function SignUpPage() {
   const mounted = useSyncExternalStore(emptySubscribe, getIsClient, getIsServer);
   const isDark = mounted && resolvedTheme === "dark";
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     /* Gather the current field values for validation and logging. */
-    const values: FormValues = { name: fullName, email, password };
+    const userData: FormValues = { name: fullName, email, password };
 
-    const nextErrors = validate(values);
+    const nextErrors = validate(userData);
     setErrors(nextErrors);
 
     if (Object.values(nextErrors).some(Boolean)) {
@@ -84,8 +85,8 @@ export default function SignUpPage() {
       return;
     }
 
-    /* Demo only — no API calls. Logged so the collected values can be inspected. */
-    console.log("formData", values);
+    await addUser(userData);
+    console.log("formData", userData);
     setSubmitted(true);
   };
 
@@ -168,15 +169,13 @@ export default function SignUpPage() {
             >
               <LuSparkles
                 aria-hidden="true"
-                className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
-                  isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
-                }`}
+                className={`absolute h-[18px] w-[18px] transition-all duration-300 ${isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+                  }`}
               />
               <LuZap
                 aria-hidden="true"
-                className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
-                  isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
-                }`}
+                className={`absolute h-[18px] w-[18px] transition-all duration-300 ${isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
+                  }`}
               />
               <span className="sr-only">Toggle theme</span>
             </button>
@@ -217,11 +216,10 @@ export default function SignUpPage() {
                       autoComplete="name"
                       aria-invalid={errors.name ? true : undefined}
                       aria-describedby={errors.name ? "name-error" : undefined}
-                      className={`w-full rounded-xl border px-4 py-2.5 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${
-                        errors.name
-                          ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
-                          : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
-                      }`}
+                      className={`w-full rounded-xl border px-4 py-2.5 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${errors.name
+                        ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
+                        : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
+                        }`}
                     />
                   </div>
                   {errors.name ? (
@@ -258,11 +256,10 @@ export default function SignUpPage() {
                       autoComplete="email"
                       aria-invalid={errors.email ? true : undefined}
                       aria-describedby={errors.email ? "email-error" : undefined}
-                      className={`w-full rounded-xl border px-4 py-2.5 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${
-                        errors.email
-                          ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
-                          : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
-                      }`}
+                      className={`w-full rounded-xl border px-4 py-2.5 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${errors.email
+                        ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
+                        : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
+                        }`}
                     />
                   </div>
                   {errors.email ? (
@@ -301,11 +298,10 @@ export default function SignUpPage() {
                       autoComplete="new-password"
                       aria-invalid={errors.password ? true : undefined}
                       aria-describedby={errors.password ? "password-error" : undefined}
-                      className={`w-full rounded-xl border px-4 py-2.5 pr-11 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${
-                        errors.password
-                          ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
-                          : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
-                      }`}
+                      className={`w-full rounded-xl border px-4 py-2.5 pr-11 text-sm shadow-sm transition duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 ${errors.password
+                        ? "border-red-500/70 bg-red-50/50 dark:border-red-500/60 dark:bg-red-500/5 text-gray-900 dark:text-gray-100 focus:border-red-500 focus:ring-red-500/25"
+                        : "border-gray-300 dark:border-gray-700 bg-white dark:bg-[#0B1220] text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500/25 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/25"
+                        }`}
                     />
                     {/* Show / hide password */}
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">

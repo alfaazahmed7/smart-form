@@ -23,7 +23,8 @@ export const addUser = async (userData: UserData) => {
         }
 
         return data;
-    } catch (error) {
+    }
+    catch (error) {
         if (error instanceof Error) {
             throw error;
         }
