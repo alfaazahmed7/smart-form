@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { pool } from "@/lib/db";
+import jwt from 'jsonwebtoken';
+
+const generateToken = (id: string) => {
+    return jwt.sign(
+        { id },
+        process.env.JWT_SECRET || 'fallback-secret',
+        { expiresIn: '30d' }
+    )
+};
 
 export async function POST(request: Request) {
     try {
@@ -29,6 +38,7 @@ export async function POST(request: Request) {
                 success: true,
                 message: "Registration successful.",
                 user: result.rows[0],
+                token: generateToken(result.rows[0].id)
             },
             { status: 201 }
         );

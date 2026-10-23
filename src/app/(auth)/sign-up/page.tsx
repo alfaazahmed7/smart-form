@@ -85,8 +85,8 @@ export default function SignUpPage() {
       return;
     }
 
-    await addUser(userData);
-    console.log("formData", userData);
+    const user = await addUser(userData);
+    console.log(user, 'user');
     setSubmitted(true);
   };
 
