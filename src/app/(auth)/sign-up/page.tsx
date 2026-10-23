@@ -7,6 +7,8 @@ import { FcGoogle } from "react-icons/fc";
 import { LuArrowRight, LuCheck, LuEye, LuEyeOff, LuShieldCheck, LuSparkles, LuZap } from "react-icons/lu";
 import { Logo } from "@/components/shared/navbar/navbar";
 import { addUser } from "@/services/auth.services";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 // Types & constants   
 
@@ -66,6 +68,8 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  const router = useRouter();
+
   /* Theme state (hydration-safe, same pattern as the navbar) */
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = useSyncExternalStore(emptySubscribe, getIsClient, getIsServer);
@@ -86,7 +90,13 @@ export default function SignUpPage() {
     }
 
     const user = await addUser(userData);
-    console.log(user, 'user');
+    if (user.success) {
+      router.push('/sign-in');
+      toast.success('Registration successful');
+    }
+    else if (!user.success) {
+      toast.error(`${user.message}`);
+    }
     setSubmitted(true);
   };
 
@@ -330,16 +340,6 @@ export default function SignUpPage() {
                     </p>
                   ) : null}
                 </div>
-
-                {submitted ? (
-                  <p
-                    role="status"
-                    className="flex items-start gap-2 rounded-xl border border-green-200 dark:border-green-500/30 bg-green-50 dark:bg-green-500/10 px-3.5 py-3 text-xs font-medium text-green-700 dark:text-green-400"
-                  >
-                    <LuShieldCheck className="mt-px h-4 w-4 shrink-0" aria-hidden="true" />
-                    Details captured — open the browser console to inspect the logged formData.
-                  </p>
-                ) : null}
 
                 <button
                   type="submit"

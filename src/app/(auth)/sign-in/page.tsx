@@ -6,6 +6,9 @@ import { useTheme } from "next-themes";
 import { FcGoogle } from "react-icons/fc";
 import { LuArrowRight, LuCheck, LuEye, LuEyeOff, LuShieldCheck, LuSparkles, LuZap } from "react-icons/lu";
 import { Logo } from "@/components/shared/navbar/navbar";
+import { useRouter } from "next/navigation";
+import { loginUser } from "@/services/auth.services";
+import { toast } from "react-toastify";
 
 // Types & constants
 
@@ -58,18 +61,20 @@ export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  const router = useRouter();
+
   /* Theme state (hydration-safe, same pattern as the navbar) */
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = useSyncExternalStore(emptySubscribe, getIsClient, getIsServer);
   const isDark = mounted && resolvedTheme === "dark";
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     /* Gather the current field values for validation and logging. */
-    const values: FormValues = { email, password };
+    const userData: FormValues = { email, password };
 
-    const nextErrors = validate(values);
+    const nextErrors = validate(userData);
     setErrors(nextErrors);
 
     if (Object.values(nextErrors).some(Boolean)) {
@@ -77,8 +82,15 @@ export default function SignInPage() {
       return;
     }
 
-    /* Demo only — no API calls. Logged so the collected values can be inspected. */
-    console.log("formData", values);
+    const user = await loginUser(userData);
+    console.log(user, 'user');
+    if (user.success) {
+      router.push('/')
+      toast.success(`Login Successful`);
+    }
+    else if (!user.success) {
+      toast.error(`${user.message}`);
+    }
     setSubmitted(true);
   };
 
@@ -282,16 +294,6 @@ export default function SignInPage() {
                     </p>
                   ) : null}
                 </div>
-
-                {submitted ? (
-                  <p
-                    role="status"
-                    className="flex items-start gap-2 rounded-xl border border-green-200 dark:border-green-500/30 bg-green-50 dark:bg-green-500/10 px-3.5 py-3 text-xs font-medium text-green-700 dark:text-green-400"
-                  >
-                    <LuShieldCheck className="mt-px h-4 w-4 shrink-0" aria-hidden="true" />
-                    Details captured — open the browser console to inspect the logged formData.
-                  </p>
-                ) : null}
 
                 <button
                   type="submit"

@@ -1,10 +1,15 @@
-interface UserData {
+interface registerUseData {
     name: string;
     email: string;
     password: string;
 }
 
-export const addUser = async (userData: UserData) => {
+interface loginUserData {
+    email: string,
+    password: string
+}
+
+export const addUser = async (userData: registerUseData) => {
     try {
         const res = await fetch("/api/register", {
             method: "POST",
@@ -17,9 +22,10 @@ export const addUser = async (userData: UserData) => {
         const data = await res.json().catch(() => null);
 
         if (!res.ok) {
-            throw new Error(
-                data?.message || "Failed to register user."
-            );
+            return {
+                success: false,
+                message: data?.message || "Failed to register user.",
+            };
         }
 
         return data;
@@ -32,3 +38,33 @@ export const addUser = async (userData: UserData) => {
         throw new Error("Something went wrong while registering user.");
     }
 };
+
+export const loginUser = async (userData: loginUserData) => {
+    try {
+        const res = await fetch(`/api/login`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            return {
+                success: false,
+                message: data?.message || 'Failed to login user.'
+            };
+        }
+
+        return data;
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        }
+
+        throw new Error("Something went wrong while login user.");
+    }
+}

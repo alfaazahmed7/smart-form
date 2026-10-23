@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/toastify-js": "^1.12.4",
     "bcryptjs": "^3.0.3",
     "jsonwebtoken": "^9.0.3",
     "next": "16.4.2",
@@ -16,7 +17,8 @@
     "pg": "^8.23.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-icons": "^5.7.0"
+    "react-icons": "^5.7.0",
+    "react-toastify": "^11.1.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",

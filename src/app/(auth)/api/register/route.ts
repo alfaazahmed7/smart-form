@@ -42,21 +42,14 @@ export async function POST(request: Request) {
             },
             { status: 201 }
         );
-    } catch (error) {
-        if (
-            typeof error === "object" &&
-            error !== null &&
-            "code" in error &&
-            error.code === "23505"
-        ) {
+    } catch (error: any) {
+        if (error?.code === "23505") {
             return NextResponse.json(
                 { message: "Email already exists." },
                 { status: 409 }
             );
         }
-
         console.error("Registration failed:", error);
-
         return NextResponse.json(
             { message: "Registration failed." },
             { status: 500 }
