@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { LuListChecks, LuMoon, LuSun } from "react-icons/lu";
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
 import { getMe } from "@/services/auth.services";
 
 /* Hydration-safe "mounted" detection (no setState in effect) */
@@ -73,6 +74,7 @@ interface User {
 }
 
 export default function Navbar() {
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>("home");
@@ -140,6 +142,17 @@ export default function Navbar() {
     fetchUser();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } catch (error) {
+      console.error("Failed to logout:", error);
+    } finally {
+      setUser(undefined);
+      router.refresh();
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full">
       <div
@@ -188,12 +201,22 @@ export default function Navbar() {
           {/* Right: theme toggle + login + hamburger */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Link
-              href="/sign-in"
-              className="inline-flex h-9 items-center justify-center rounded-lg bg-indigo-600 dark:bg-indigo-500 px-4 text-sm font-medium text-white shadow-sm shadow-indigo-600/25 dark:shadow-indigo-500/25 transition-all duration-200 hover:bg-indigo-500 dark:hover:bg-indigo-400 hover:shadow-md hover:shadow-indigo-600/30 dark:hover:shadow-indigo-500/30 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950"
-            >
-              Login
-            </Link>
+            {user ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="inline-flex h-9 items-center justify-center rounded-lg bg-indigo-600 dark:bg-indigo-500 px-4 text-sm font-medium text-white shadow-sm shadow-indigo-600/25 dark:shadow-indigo-500/25 transition-all duration-200 hover:bg-indigo-500 dark:hover:bg-indigo-400 hover:shadow-md hover:shadow-indigo-600/30 dark:hover:shadow-indigo-500/30 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                href="/sign-up"
+                className="inline-flex h-9 items-center justify-center rounded-lg bg-indigo-600 dark:bg-indigo-500 px-4 text-sm font-medium text-white shadow-sm shadow-indigo-600/25 dark:shadow-indigo-500/25 transition-all duration-200 hover:bg-indigo-500 dark:hover:bg-indigo-400 hover:shadow-md hover:shadow-indigo-600/30 dark:hover:shadow-indigo-500/30 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950"
+              >
+                Register
+              </Link>
+            )}
 
             {/* Hamburger (mobile) */}
             <button
