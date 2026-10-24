@@ -84,6 +84,7 @@ export default function SignInPage() {
     const user = await loginUser(userData);
     if (user.success) {
       router.push('/')
+      router.refresh();
       toast.success(`Login Successful`);
     }
     else if (!user.success) {

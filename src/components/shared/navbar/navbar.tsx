@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { LuListChecks, LuMoon, LuSun } from "react-icons/lu";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
-import { getMe } from "@/services/auth.services";
+import { getMe, logoutUser } from "@/services/auth.services";
 
 /* Hydration-safe "mounted" detection (no setState in effect) */
 const emptySubscribe = () => () => { };
@@ -132,6 +132,7 @@ export default function Navbar() {
         const currentUser = await getMe();
         if (currentUser.success) {
           setUser(currentUser.user);
+          router.refresh();
         }
       }
       catch (error) {
@@ -144,14 +145,14 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/logout", { method: "POST" });
-    } catch (error) {
-      console.error("Failed to logout:", error);
-    } finally {
+      await logoutUser();
       setUser(undefined);
       router.refresh();
     }
-  };
+    catch (error) {
+      console.error('Logout failed:', error);
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full">

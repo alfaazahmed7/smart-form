@@ -107,3 +107,26 @@ export const getMe = async (): Promise<GetMeResponse> => {
         throw new Error('Something went wrong');
     }
 }
+
+export const logoutUser = async () => {
+    try {
+        const res = await fetch('/api/logout', {
+            method: 'POST'
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.message || 'Failed to logout');
+        }
+
+        return data;
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        }
+
+        throw new Error('Somehting went wrong');
+    }
+}
