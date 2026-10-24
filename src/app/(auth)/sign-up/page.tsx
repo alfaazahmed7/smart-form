@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 // Types & constants   
-
 type FormValues = { name: string; email: string; password: string };
 type FormErrors = Partial<Record<keyof FormValues, string>>;
 
@@ -78,7 +77,6 @@ export default function SignUpPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    /* Gather the current field values for validation and logging. */
     const userData: FormValues = { name: fullName, email, password };
 
     const nextErrors = validate(userData);
@@ -95,7 +93,7 @@ export default function SignUpPage() {
       toast.success('Registration successful');
     }
     else if (!user.success) {
-      toast.error(`${user.message}`);
+      toast.error(`${user.message}` || 'Registration failed');
     }
     setSubmitted(true);
   };

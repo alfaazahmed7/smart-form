@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { LuListChecks, LuMoon, LuSun } from "react-icons/lu";
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { getMe } from "@/services/auth.services";
 
 /* Hydration-safe "mounted" detection (no setState in effect) */
-const emptySubscribe = () => () => {};
+const emptySubscribe = () => () => { };
 const getIsClient = () => true;
 const getIsServer = () => false;
 
@@ -52,25 +53,31 @@ function ThemeToggle() {
     >
       <LuSun
         aria-hidden="true"
-        className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
-          isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
-        }`}
+        className={`absolute h-[18px] w-[18px] transition-all duration-300 ${isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+          }`}
       />
       <LuMoon
         aria-hidden="true"
-        className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
-          isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
-        }`}
+        className={`absolute h-[18px] w-[18px] transition-all duration-300 ${isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
+          }`}
       />
       <span className="sr-only">Toggle theme</span>
     </button>
   );
 }
 
+interface User {
+  id: string,
+  name: string,
+  email: string
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>("home");
+  const [user, setUser] = useState<User>();
+  console.log(user, 'user');
 
   /* Sticky scroll effect */
   useEffect(() => {
@@ -117,14 +124,29 @@ export default function Navbar() {
     return () => mediaQuery.removeEventListener("change", onChange);
   }, []);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const currentUser = await getMe();
+        if (currentUser.success) {
+          setUser(currentUser.user);
+        }
+      }
+      catch (error) {
+        console.error('Failed to fetch user:', error);
+      }
+    }
+
+    fetchUser();
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 w-full">
       <div
-        className={`border-b transition-all duration-300 ease-out ${
-          scrolled || open
-            ? "border-gray-200/80 dark:border-gray-800/80 bg-white/80 dark:bg-[#0F172A] shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.10)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_8px_24px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl"
-            : "border-transparent bg-transparent shadow-none dark:bg-[#0F172A]"
-        }`}
+        className={`border-b transition-all duration-300 ease-out ${scrolled || open
+          ? "border-gray-200/80 dark:border-gray-800/80 bg-white/80 dark:bg-[#0F172A] shadow-[0_1px_2px_rgba(15,23,42,0.05),0_8px_24px_-12px_rgba(15,23,42,0.10)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_8px_24px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl"
+          : "border-transparent bg-transparent shadow-none dark:bg-[#0F172A]"
+          }`}
       >
         <nav
           aria-label="Main"
@@ -144,21 +166,19 @@ export default function Navbar() {
                   key={link.id}
                   href={link.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={`group relative px-3.5 py-2 text-sm font-medium outline-none transition-colors duration-200 focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 ${
-                    isActive
-                      ? "text-gray-900 dark:text-white"
-                      : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                  }`}
+                  className={`group relative px-3.5 py-2 text-sm font-medium outline-none transition-colors duration-200 focus-visible:rounded-lg focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 ${isActive
+                    ? "text-gray-900 dark:text-white"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    }`}
                 >
                   {link.label}
                   {/* Colorful underline: only beneath active center link */}
                   <span
                     aria-hidden="true"
-                    className={`absolute inset-x-3.5 -bottom-0.5 h-[3px] rounded-full bg-indigo-600 dark:bg-indigo-400 transition-transform duration-300 ease-out ${
-                      isActive
-                        ? "scale-x-100"
-                        : "scale-x-0 group-hover:scale-x-50 group-hover:opacity-40"
-                    }`}
+                    className={`absolute inset-x-3.5 -bottom-0.5 h-[3px] rounded-full bg-indigo-600 dark:bg-indigo-400 transition-transform duration-300 ease-out ${isActive
+                      ? "scale-x-100"
+                      : "scale-x-0 group-hover:scale-x-50 group-hover:opacity-40"
+                      }`}
                   />
                 </Link>
               );
@@ -186,19 +206,16 @@ export default function Navbar() {
             >
               <span className="relative block h-[18px] w-[18px]">
                 <span
-                  className={`absolute left-0 top-0 block h-[2px] w-full rounded-full bg-current transition-all duration-300 ease-out ${
-                    open ? "top-[8px] rotate-45" : ""
-                  }`}
+                  className={`absolute left-0 top-0 block h-[2px] w-full rounded-full bg-current transition-all duration-300 ease-out ${open ? "top-[8px] rotate-45" : ""
+                    }`}
                 />
                 <span
-                  className={`absolute left-0 top-[8px] block h-[2px] w-full rounded-full bg-current transition-all duration-300 ease-out ${
-                    open ? "opacity-0" : "opacity-100"
-                  }`}
+                  className={`absolute left-0 top-[8px] block h-[2px] w-full rounded-full bg-current transition-all duration-300 ease-out ${open ? "opacity-0" : "opacity-100"
+                    }`}
                 />
                 <span
-                  className={`absolute left-0 top-0 block h-[2px] w-full rounded-full bg-current transition-all duration-300 ease-out ${
-                    open ? "top-[8px] -rotate-45" : "top-[16px]"
-                  }`}
+                  className={`absolute left-0 top-0 block h-[2px] w-full rounded-full bg-current transition-all duration-300 ease-out ${open ? "top-[8px] -rotate-45" : "top-[16px]"
+                    }`}
                 />
               </span>
             </button>
@@ -208,9 +225,8 @@ export default function Navbar() {
         {/* Mobile menu */}
         <div
           id="mobile-menu"
-          className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out md:hidden ${
-            open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          }`}
+          className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out md:hidden ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            }`}
         >
           <div className="border-t border-gray-200/70 dark:border-gray-800/70 px-4 pb-5 pt-3 sm:px-6">
             <ul className="flex flex-col gap-1">
@@ -222,11 +238,10 @@ export default function Navbar() {
                       href={link.href}
                       onClick={() => setOpen(false)}
                       aria-current={isActive ? "page" : undefined}
-                      className={`relative flex items-center rounded-lg px-3 py-2.5 text-[15px] font-medium outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 ${
-                        isActive
-                          ? "bg-gray-100 dark:bg-gray-800/70 text-gray-900 dark:text-white"
-                          : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
-                      }`}
+                      className={`relative flex items-center rounded-lg px-3 py-2.5 text-[15px] font-medium outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 ${isActive
+                        ? "bg-gray-100 dark:bg-gray-800/70 text-gray-900 dark:text-white"
+                        : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
+                        }`}
                     >
                       {link.label}
                       {isActive && (

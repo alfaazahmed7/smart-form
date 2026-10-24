@@ -9,6 +9,21 @@ interface loginUserData {
     password: string
 }
 
+type GetMeResponse =
+    | {
+        success: true;
+        message: string;
+        user: {
+            id: string,
+            email: string,
+            name: string
+        }
+    }
+    | {
+        success: false;
+        message: string;
+    };
+
 export const addUser = async (userData: registerUseData) => {
     try {
         const res = await fetch("/api/register", {
@@ -66,5 +81,29 @@ export const loginUser = async (userData: loginUserData) => {
         }
 
         throw new Error("Something went wrong while login user.");
+    }
+}
+
+export const getMe = async (): Promise<GetMeResponse> => {
+    try {
+        const res = await fetch('/api/me');
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            return {
+                success: false,
+                message: data?.message ?? `Request failed (${res.status})`
+            }
+        }
+
+        return data;
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        }
+
+        throw new Error('Something went wrong');
     }
 }

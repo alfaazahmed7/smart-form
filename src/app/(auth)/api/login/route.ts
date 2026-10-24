@@ -30,16 +30,27 @@ export async function POST(request: Request) {
         const user = result.rows[0];
 
         if (user && (await bcrypt.compare(password, user.password_hash))) {
-            return NextResponse.json({
+            const token = generateToken(user.id);
+
+            const response = NextResponse.json({
                 success: true,
                 message: 'Login Successful',
                 user: {
                     id: user.id,
                     name: user.name,
                     email: user.email
-                },
-                token: generateToken(user.id)
+                }
             });
+
+            response.cookies.set('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                path: '/',
+                maxAge: 60 * 60 * 24 * 30
+            });
+
+            return response;
         }
         else {
             return NextResponse.json(

@@ -71,7 +71,6 @@ export default function SignInPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    /* Gather the current field values for validation and logging. */
     const userData: FormValues = { email, password };
 
     const nextErrors = validate(userData);
@@ -83,13 +82,12 @@ export default function SignInPage() {
     }
 
     const user = await loginUser(userData);
-    console.log(user, 'user');
     if (user.success) {
       router.push('/')
       toast.success(`Login Successful`);
     }
     else if (!user.success) {
-      toast.error(`${user.message}`);
+      toast.error(`${user.message}` || 'Login Failed');
     }
     setSubmitted(true);
   };
