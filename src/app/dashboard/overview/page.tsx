@@ -71,7 +71,7 @@ const RECENT_ACTIVITY = [
 ];
 
 const QUICK_ACTIONS = [
-    { label: "Create a Form", href: "/dashboard/forms", icon: LuPlus },
+    { label: "Create a Form", href: "/forms/new", icon: LuPlus },
     { label: "View My Forms", href: "/dashboard/forms", icon: LuFileText },
     { label: "View Submissions", href: "/dashboard/submissions", icon: LuInbox },
     { label: "Customize Chatbot", href: "/dashboard/settings", icon: LuPalette },
@@ -92,7 +92,7 @@ const DashboardOverviewPage = () => {
                     </p>
                 </div>
                 <Link
-                    href="/dashboard/forms"
+                    href="/forms/new"
                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
                 >
                     <LuPlus className="h-4 w-4" aria-hidden="true" />
@@ -305,7 +305,7 @@ const DashboardOverviewPage = () => {
                         Create a form or chatbot in minutes and start collecting responses right away.
                     </p>
                     <Link
-                        href="/dashboard/forms"
+                        href="/forms/new"
                         className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-50 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
                     >
                         <LuPlus className="h-4 w-4" aria-hidden="true" />
@@ -318,3 +318,4 @@ const DashboardOverviewPage = () => {
 };
 
 export default DashboardOverviewPage;
+
