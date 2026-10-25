@@ -81,7 +81,7 @@ export default function Navbar() {
   const [user, setUser] = useState<User>();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
-  console.log(user, 'user');
+  // console.log(user, 'user');
 
   /* Sticky scroll effect */
   useEffect(() => {
@@ -256,7 +256,7 @@ export default function Navbar() {
                         Profile
                       </Link>
                       <Link
-                        href="/dashboard"
+                        href="/dashboard/overview"
                         onClick={() => setUserMenuOpen(false)}
                         role="menuitem"
                         className="flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
