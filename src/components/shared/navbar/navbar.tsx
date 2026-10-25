@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { LuListChecks, LuMoon, LuSun } from "react-icons/lu";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { LuListChecks, LuMoon, LuSun, LuUser, LuChevronDown, LuLayoutDashboard, LuLogOut } from "react-icons/lu";
+import { useEffect, useState, useSyncExternalStore, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getMe, logoutUser } from "@/services/auth.services";
 
@@ -79,6 +79,8 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>("home");
   const [user, setUser] = useState<User>();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   console.log(user, 'user');
 
   /* Sticky scroll effect */
@@ -143,7 +145,27 @@ export default function Navbar() {
     fetchUser();
   }, []);
 
+  /* Close user menu on outside click / Escape */
+  useEffect(() => {
+    if (!userMenuOpen) return;
+    const onClick = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setUserMenuOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [userMenuOpen]);
+
   const handleLogout = async () => {
+    setUserMenuOpen(false);
     try {
       await logoutUser();
       setUser(undefined);
@@ -203,13 +225,58 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             {user ? (
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="inline-flex h-9 items-center justify-center rounded-lg bg-indigo-600 dark:bg-indigo-500 px-4 text-sm font-medium text-white shadow-sm shadow-indigo-600/25 dark:shadow-indigo-500/25 transition-all duration-200 hover:bg-indigo-500 dark:hover:bg-indigo-400 hover:shadow-md hover:shadow-indigo-600/30 dark:hover:shadow-indigo-500/30 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950"
-              >
-                Logout
-              </button>
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  aria-haspopup="menu"
+                  aria-expanded={userMenuOpen}
+                  className="inline-flex h-9 items-center gap-2 rounded-lg border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 px-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950"
+                >
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400">
+                    <LuUser className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                  <span className="max-w-[120px] truncate">{user.name}</span>
+                  <LuChevronDown className={`h-4 w-4 transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`} aria-hidden="true" />
+                </button>
+
+                {userMenuOpen && (
+                  <div
+                    role="menu"
+                    className="absolute right-0 top-full mt-2 w-48 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg shadow-gray-900/10 dark:shadow-black/40"
+                  >
+                    <div className="py-1">
+                      <Link
+                        href="/profile"
+                        onClick={() => setUserMenuOpen(false)}
+                        role="menuitem"
+                        className="flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
+                        <LuUser className="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                        Profile
+                      </Link>
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setUserMenuOpen(false)}
+                        role="menuitem"
+                        className="flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
+                        <LuLayoutDashboard className="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                        Dashboard
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        role="menuitem"
+                        className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-sm text-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
+                        <LuLogOut className="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             ) : (
               <Link
                 href="/sign-up"
