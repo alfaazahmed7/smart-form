@@ -19,7 +19,10 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import FormPreview from "@/components/dashboard/form/formPreview";
-import ChatbotSettings from "@/components/dashboard/form/chatbotSettings";
+import ChatbotSettings, {
+    DEFAULT_CHATBOT_SETTINGS,
+    type ChatbotSettings as ChatbotSettingsType,
+} from "@/components/dashboard/form/chatbotSettings";
 import {
     LuPlus,
     LuTrash2,
@@ -418,6 +421,9 @@ export default function NewFormPage() {
     const [titleError, setTitleError] = useState("");
     const [questions, setQuestions] = useState<Question[]>([]);
 
+    const [chatbotSettings, setChatbotSettings] =
+        useState<ChatbotSettingsType>(DEFAULT_CHATBOT_SETTINGS);
+
     const [activeTab, setActiveTab] = useState<"questions" | "preview" | "chatbot">(
         "questions"
     );
@@ -739,7 +745,17 @@ export default function NewFormPage() {
             ) : null}
 
             {activeTab === "preview" ? <FormPreview /> : null}
-            {activeTab === "chatbot" ? <ChatbotSettings /> : null}
+            {activeTab === "chatbot" ? (
+                    <ChatbotSettings
+                        settings={chatbotSettings}
+                        onChange={(updates) =>
+                            setChatbotSettings((prev) => ({
+                                ...prev,
+                                ...updates,
+                            }))
+                        }
+                    />
+                ) : null}
         </div>
     );
 }
