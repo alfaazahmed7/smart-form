@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import {
     DndContext,
     closestCenter,
@@ -18,6 +18,8 @@ import {
     arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import FormPreview from "@/components/dashboard/form/formPreview";
+import ChatbotSettings from "@/components/dashboard/form/chatbotSettings";
 import {
     LuPlus,
     LuTrash2,
@@ -416,6 +418,19 @@ export default function NewFormPage() {
     const [titleError, setTitleError] = useState("");
     const [questions, setQuestions] = useState<Question[]>([]);
 
+    const [activeTab, setActiveTab] = useState<"questions" | "preview" | "chatbot">(
+        "questions"
+    );
+    const tabContainerRef = useRef<HTMLDivElement>(null);
+    const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+    const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+
+    const tabs = [
+        { id: "questions" as const, label: "Questions", icon: LuPencil },
+        { id: "preview" as const, label: "Preview", icon: LuEye },
+        { id: "chatbot" as const, label: "Chatbot Settings", icon: LuSettings },
+    ];
+
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
         useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -432,6 +447,29 @@ export default function NewFormPage() {
         });
     };
 
+    const activeIndex = tabs.findIndex((t) => t.id === activeTab);
+
+    useLayoutEffect(() => {
+        const container = tabContainerRef.current;
+        const btn = tabRefs.current[activeIndex];
+        if (!container || !btn) return;
+        const cRect = container.getBoundingClientRect();
+        const bRect = btn.getBoundingClientRect();
+        setIndicator({ left: bRect.left - cRect.left, width: bRect.width });
+    }, [activeIndex]);
+
+    useEffect(() => {
+        const update = () => {
+            const container = tabContainerRef.current;
+            const btn = tabRefs.current[activeIndex];
+            if (!container || !btn) return;
+            const cRect = container.getBoundingClientRect();
+            const bRect = btn.getBoundingClientRect();
+            setIndicator({ left: bRect.left - cRect.left, width: bRect.width });
+        };
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
+    }, [activeIndex]);
     const handleCreateForm = () => {
         if (!formTitle.trim()) {
             setTitleError("Form title is required.");
@@ -572,7 +610,7 @@ export default function NewFormPage() {
 
     return (
         <div className="space-y-6">
-            <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
                     <h1 className="truncate text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
                         {formTitle || "Untitled Form"}
@@ -583,32 +621,68 @@ export default function NewFormPage() {
                         </p>
                     ) : null}
                 </div>
-                <div className="flex flex-wrap gap-2">
-                    <button
-                        type="button"
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-900/40 dark:text-gray-200"
-                    >
-                        <LuEye className="h-4 w-4" aria-hidden="true" />
-                        Preview
-                    </button>
-                    <button
-                        type="button"
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-900/40 dark:text-gray-200"
-                    >
-                        <LuSettings className="h-4 w-4" aria-hidden="true" />
-                        Chatbot Settings
-                    </button>
-                    <button
-                        type="button"
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm dark:bg-indigo-500"
-                    >
-                        <LuSend className="h-4 w-4" aria-hidden="true" />
-                        Publish
-                    </button>
-                </div>
+                <button
+                    type="button"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm dark:bg-indigo-500"
+                >
+                    <LuSend className="h-4 w-4" aria-hidden="true" />
+                    Publish
+                </button>
             </header>
 
-            <DndContext
+            <div
+                ref={(el) => {
+                    tabContainerRef.current = el;
+                }}
+                className="relative mx-auto flex w-fit max-w-full items-center gap-0.5 rounded-2xl bg-gray-100/80 px-1 py-1.5 dark:bg-gray-800/60"
+                role="tablist"
+                aria-label="Form builder sections"
+            >
+                <div
+                    className="absolute rounded-xl bg-white shadow-sm transition-all duration-300 ease-out dark:bg-gray-900"
+                    style={{ left: indicator.left, width: indicator.width, top: 6, bottom: 6 }}
+                    aria-hidden="true"
+                />
+                {tabs.map((tab, i) => {
+                    const Icon = tab.icon;
+                    const isActive = tab.id === activeTab;
+                    return (
+                        <button
+                            key={tab.id}
+                            ref={(el) => {
+                                tabRefs.current[i] = el;
+                                if (el && i === activeIndex) {
+                                    const container = tabContainerRef.current;
+                                    if (container) {
+                                        const cRect = container.getBoundingClientRect();
+                                        const bRect = el.getBoundingClientRect();
+                                        setIndicator({
+                                            left: bRect.left - cRect.left,
+                                            width: bRect.width,
+                                        });
+                                    }
+                                }
+                            }}
+                            type="button"
+                            role="tab"
+                            aria-selected={isActive}
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`relative z-10 flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-[#0F172A] ${
+                                isActive
+                                    ? "text-indigo-700 dark:text-indigo-300"
+                                    : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                            }`}
+                        >
+                            <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+                            <span className="truncate">{tab.label}</span>
+                        </button>
+                    );
+                })}
+            </div>
+
+            {activeTab === "questions" ? (
+                <>
+                    <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
                 onDragEnd={handleDragEnd}
@@ -660,6 +734,12 @@ export default function NewFormPage() {
                     Log Form Data
                 </button>
             </div>
+
+                </>
+            ) : null}
+
+            {activeTab === "preview" ? <FormPreview /> : null}
+            {activeTab === "chatbot" ? <ChatbotSettings /> : null}
         </div>
     );
 }
