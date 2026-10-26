@@ -24,6 +24,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
     LuCheck,
@@ -37,6 +38,7 @@ import {
     LuTrash2,
     LuX,
 } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 type QuestionType = "short_text" | "email" | "multiple_choice" | "yes_no";
 
@@ -427,7 +429,6 @@ export default function NewFormPage() {
 
     const [chatbotSettings, setChatbotSettings] =
         useState<ChatbotSettingsType>(DEFAULT_CHATBOT_SETTINGS);
-    // console.log(chatbotSettings, 'chatbotSettings');
 
     const [activeTab, setActiveTab] = useState<"questions" | "preview" | "chatbot">(
         "questions"
@@ -538,6 +539,8 @@ export default function NewFormPage() {
         );
     };
 
+    const router = useRouter();
+
     const submissionData = {
         title: formTitle,
         description: formDescription,
@@ -556,9 +559,15 @@ export default function NewFormPage() {
 
         try {
             const data = await formSubmission(submissionData, userId);
+
+            if (data.success) {
+                router.push('/dashboard/forms');
+                toast.success('Form created successfully');
+            }
         }
         catch (error) {
             console.error('Failed to create form:', error);
+            toast.error(`'Failed to create form:', ${error}`);
         }
 
         console.log(userId, submissionData);
@@ -652,13 +661,6 @@ export default function NewFormPage() {
                         </p>
                     ) : null}
                 </div>
-                <button
-                    type="button"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm dark:bg-indigo-500"
-                >
-                    <LuSend className="h-4 w-4" aria-hidden="true" />
-                    Publish
-                </button>
             </header>
 
             <div
@@ -759,16 +761,23 @@ export default function NewFormPage() {
                         <button
                             type="button"
                             onClick={handleSubmit}
-                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
+                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                         >
-                            Log Form Data
+                            <LuSend className="h-4 w-4" aria-hidden="true" />
+                            Publish
                         </button>
                     </div>
 
                 </>
             ) : null}
 
-            {activeTab === "preview" ? <FormPreview /> : null}
+            {activeTab === "preview" ? (
+                <FormPreview
+                    data={submissionData}
+                    formData={submissionData}
+                    submissionData={submissionData}
+                />
+            ) : null}
             {activeTab === "chatbot" ? (
                 <ChatbotSettings
                     settings={chatbotSettings}

@@ -524,15 +524,6 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                     </div>
                 </section>
 
-                <div className="flex justify-end pt-2">
-                    <button
-                        type="button"
-                        // onClick={() => console.log(settings)}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
-                    >
-                        Log Settings
-                    </button>
-                </div>
             </div>
         </div>
     );
