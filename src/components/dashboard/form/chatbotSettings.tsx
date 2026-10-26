@@ -123,11 +123,10 @@ function SegmentedControl<T extends string>({
                         role="radio"
                         aria-checked={selected}
                         onClick={() => onChange(option)}
-                        className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
-                            selected
+                        className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${selected
                                 ? "bg-indigo-600 text-white shadow-sm dark:bg-indigo-500"
                                 : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                        }`}
+                            }`}
                     >
                         {option}
                     </button>
@@ -325,11 +324,10 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                                     type="button"
                                     onClick={() => onChange({ themeColor: color })}
                                     aria-label={`Use ${color}`}
-                                    className={`h-7 w-7 rounded-full border-2 transition hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
-                                        settings.themeColor.toLowerCase() === color.toLowerCase()
+                                    className={`h-7 w-7 rounded-full border-2 transition hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${settings.themeColor.toLowerCase() === color.toLowerCase()
                                             ? "border-indigo-500 scale-110"
                                             : "border-transparent"
-                                    }`}
+                                        }`}
                                     style={{ backgroundColor: color }}
                                 />
                             ))}
@@ -473,11 +471,10 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
 
                     <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900/40">
                         <div
-                            className={`flex ${
-                                settings.chatbotPosition === "Bottom left"
+                            className={`flex ${settings.chatbotPosition === "Bottom left"
                                     ? "justify-start"
                                     : "justify-end"
-                            }`}
+                                }`}
                         >
                             <div className="w-full max-w-xs space-y-2">
                                 <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900">
@@ -508,11 +505,10 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                                     </div>
                                 </div>
                                 <div
-                                    className={`flex ${
-                                        settings.chatbotPosition === "Bottom left"
+                                    className={`flex ${settings.chatbotPosition === "Bottom left"
                                             ? "justify-start"
                                             : "justify-end"
-                                    }`}
+                                        }`}
                                 >
                                     <button
                                         type="button"
@@ -531,7 +527,7 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                 <div className="flex justify-end pt-2">
                     <button
                         type="button"
-                        onClick={() => console.log(settings)}
+                        // onClick={() => console.log(settings)}
                         className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
                     >
                         Log Settings

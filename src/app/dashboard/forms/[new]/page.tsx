@@ -1,9 +1,15 @@
 ﻿"use client";
 
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import ChatbotSettings, {
+    DEFAULT_CHATBOT_SETTINGS,
+    type ChatbotSettings as ChatbotSettingsType,
+} from "@/components/dashboard/form/chatbotSettings";
+import FormPreview from "@/components/dashboard/form/formPreview";
+import { getMe } from "@/services/auth.services";
+import { formSubmission } from "@/services/form.services";
 import {
-    DndContext,
     closestCenter,
+    DndContext,
     KeyboardSensor,
     PointerSensor,
     useSensor,
@@ -11,28 +17,24 @@ import {
     type DragEndEvent,
 } from "@dnd-kit/core";
 import {
+    arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
-    verticalListSortingStrategy,
     useSortable,
-    arrayMove,
+    verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import FormPreview from "@/components/dashboard/form/formPreview";
-import ChatbotSettings, {
-    DEFAULT_CHATBOT_SETTINGS,
-    type ChatbotSettings as ChatbotSettingsType,
-} from "@/components/dashboard/form/chatbotSettings";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
-    LuPlus,
-    LuTrash2,
-    LuPencil,
-    LuGripVertical,
-    LuChevronDown,
     LuCheck,
+    LuChevronDown,
     LuEye,
-    LuSettings,
+    LuGripVertical,
+    LuPencil,
+    LuPlus,
     LuSend,
+    LuSettings,
+    LuTrash2,
     LuX,
 } from "react-icons/lu";
 
@@ -198,13 +200,12 @@ function SortableQuestionCard({
         <div
             ref={setNodeRef}
             style={style}
-            className={`rounded-2xl border bg-white p-4 shadow-sm transition-all duration-200 sm:p-5 dark:bg-gray-900/60 ${
-                isDragging
-                    ? "opacity-50 ring-2 ring-indigo-400/30"
-                    : isOver
+            className={`rounded-2xl border bg-white p-4 shadow-sm transition-all duration-200 sm:p-5 dark:bg-gray-900/60 ${isDragging
+                ? "opacity-50 ring-2 ring-indigo-400/30"
+                : isOver
                     ? "border-indigo-400 ring-2 ring-indigo-400/40 dark:border-indigo-500"
                     : "border-gray-200 dark:border-gray-800"
-            }`}
+                }`}
         >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
                 <div className="flex items-center gap-2 text-gray-400">
@@ -253,9 +254,8 @@ function SortableQuestionCard({
                                 </span>
                                 <LuChevronDown
                                     aria-hidden="true"
-                                    className={`h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200 ${
-                                        isTypeOpen ? "rotate-180" : ""
-                                    }`}
+                                    className={`h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200 ${isTypeOpen ? "rotate-180" : ""
+                                        }`}
                                 />
                             </button>
 
@@ -278,15 +278,13 @@ function SortableQuestionCard({
                                                 onMouseEnter={() =>
                                                     setHighlightedIndex(index)
                                                 }
-                                                className={`flex cursor-pointer items-center justify-between px-3.5 py-2 text-sm transition-colors ${
-                                                    index === highlightedIndex
-                                                        ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300"
-                                                        : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
-                                                } ${
-                                                    value === question.type
+                                                className={`flex cursor-pointer items-center justify-between px-3.5 py-2 text-sm transition-colors ${index === highlightedIndex
+                                                    ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300"
+                                                    : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                                                    } ${value === question.type
                                                         ? "font-medium"
                                                         : ""
-                                                }`}
+                                                    }`}
                                             >
                                                 <span>{label}</span>
                                                 {value === question.type ? (
@@ -329,63 +327,69 @@ function SortableQuestionCard({
                         </label>
                     </div>
 
-                {question.type === "multiple_choice" ? (
-                    <div className="space-y-3 rounded-xl border border-indigo-100 bg-indigo-50/40 p-3 dark:border-indigo-500/20 dark:bg-indigo-500/5">
-                        <div>
-                            <p className="text-xs font-semibold text-gray-700 dark:text-gray-200">
-                                Answer options
-                            </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                Add the choices respondents can select.
-                            </p>
+                    {question.type === "multiple_choice" ? (
+                        <div className="space-y-3 rounded-xl border border-indigo-100 bg-indigo-50/40 p-3 dark:border-indigo-500/20 dark:bg-indigo-500/5">
+                            <div>
+                                <p className="text-xs font-semibold text-gray-700 dark:text-gray-200">
+                                    Answer options
+                                </p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    Add the choices respondents can select.
+                                </p>
+                            </div>
+                            <ul className="space-y-2.5">
+                                {question.options.map((option, optionIndex) => (
+                                    <li key={optionIndex}>
+                                        <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 shadow-sm transition-all duration-200 hover:border-indigo-300 hover:shadow-md focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20 dark:border-gray-700 dark:bg-gray-900/40 dark:hover:border-indigo-500/50">
+                                            <span
+                                                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-indigo-300 bg-white dark:border-indigo-400/60 dark:bg-gray-900"
+                                                aria-hidden="true"
+                                            />
+                                            <input
+                                                type="text"
+                                                value={option}
+                                                onChange={(e) =>
+                                                    updateOption(
+                                                        question.id,
+                                                        optionIndex,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder={`Option ${optionIndex + 1}`}
+                                                aria-label={`Option ${optionIndex + 1}`}
+                                                className="flex-1 bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-white"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    removeOption(question.id, optionIndex)
+                                                }
+                                                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:bg-red-500/10 dark:hover:text-red-400"
+                                                aria-label="Remove option"
+                                                title="Remove option"
+                                            >
+                                                <LuX className="h-4 w-4" aria-hidden="true" />
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                            <button
+                                type="button"
+                                onClick={() => addOption(question.id)}
+                                disabled={question.options.length >= 3}
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-indigo-200 bg-indigo-50/40 px-3 py-2.5 text-sm font-medium text-indigo-600 transition hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-500/30 dark:bg-indigo-500/5 dark:text-indigo-300 dark:hover:border-indigo-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-200"
+                            >
+                                <LuPlus className="h-4 w-4" aria-hidden="true" />
+                                Add option
+                            </button>
+                            {question.options.length >= 3 ? (
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    Maximum of 3 options reached.
+                                </p>
+                            ) : null}
                         </div>
-                        <ul className="space-y-2.5">
-                            {question.options.map((option, optionIndex) => (
-                                <li key={optionIndex}>
-                                    <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 shadow-sm transition-all duration-200 hover:border-indigo-300 hover:shadow-md focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20 dark:border-gray-700 dark:bg-gray-900/40 dark:hover:border-indigo-500/50">
-                                        <span
-                                            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-indigo-300 bg-white dark:border-indigo-400/60 dark:bg-gray-900"
-                                            aria-hidden="true"
-                                        />
-                                        <input
-                                            type="text"
-                                            value={option}
-                                            onChange={(e) =>
-                                                updateOption(
-                                                    question.id,
-                                                    optionIndex,
-                                                    e.target.value
-                                                )
-                                            }
-                                            placeholder={`Option ${optionIndex + 1}`}
-                                            aria-label={`Option ${optionIndex + 1}`}
-                                            className="flex-1 bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-white"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                removeOption(question.id, optionIndex)
-                                            }
-                                            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:bg-red-500/10 dark:hover:text-red-400"
-                                            aria-label="Remove option"
-                                            title="Remove option"
-                                        >
-                                            <LuX className="h-4 w-4" aria-hidden="true" />
-                                        </button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                        <button
-                            type="button"
-                            onClick={() => addOption(question.id)}
-                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-indigo-200 bg-indigo-50/40 px-3 py-2.5 text-sm font-medium text-indigo-600 transition hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-indigo-500/30 dark:bg-indigo-500/5 dark:text-indigo-300 dark:hover:border-indigo-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-200"
-                        >
-                            <LuPlus className="h-4 w-4" aria-hidden="true" />
-                            Add option
-                        </button>
-                    </div>
-                ) : null}
+                    ) : null}
 
                 </div>
 
@@ -423,6 +427,7 @@ export default function NewFormPage() {
 
     const [chatbotSettings, setChatbotSettings] =
         useState<ChatbotSettingsType>(DEFAULT_CHATBOT_SETTINGS);
+    // console.log(chatbotSettings, 'chatbotSettings');
 
     const [activeTab, setActiveTab] = useState<"questions" | "preview" | "chatbot">(
         "questions"
@@ -502,9 +507,11 @@ export default function NewFormPage() {
 
     const addOption = (id: string) => {
         setQuestions((prev) =>
-            prev.map((q) =>
-                q.id === id ? { ...q, options: [...q.options, ""] } : q
-            )
+            prev.map((q) => {
+                if (q.id !== id) return q;
+                if (q.options.length >= 3) return q;
+                return { ...q, options: [...q.options, ""] };
+            })
         );
     };
 
@@ -531,13 +538,32 @@ export default function NewFormPage() {
         );
     };
 
-    const handleSubmit = () => {
-        console.log({
-            title: formTitle,
-            description: formDescription,
-            questions,
-        });
+    const submissionData = {
+        title: formTitle,
+        description: formDescription,
+        questions,
+        settings: chatbotSettings
+    }
+
+
+    const handleSubmit = async () => {
+        const currentUser = await getMe();
+        let userId = '';
+
+        if (currentUser.success) {
+            userId = currentUser.user.id;
+        }
+
+        try {
+            const data = await formSubmission(submissionData, userId);
+        }
+        catch (error) {
+            console.error('Failed to create form:', error);
+        }
+
+        console.log(userId, submissionData);
     };
+
     if (step === "details") {
         return (
             <div className="mx-auto w-full max-w-2xl">
@@ -567,11 +593,10 @@ export default function NewFormPage() {
                                 if (titleError) setTitleError("");
                             }}
                             placeholder="Enter form title"
-                            className={`w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none transition focus:ring-2 ${
-                                titleError
-                                    ? "border-red-400 focus:ring-red-400 dark:border-red-500"
-                                    : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900/40 dark:text-white"
-                            }`}
+                            className={`w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none transition focus:ring-2 ${titleError
+                                ? "border-red-400 focus:ring-red-400 dark:border-red-500"
+                                : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900/40 dark:text-white"
+                                }`}
                         />
                         {titleError ? (
                             <p
@@ -673,11 +698,10 @@ export default function NewFormPage() {
                             role="tab"
                             aria-selected={isActive}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`relative z-10 flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-[#0F172A] ${
-                                isActive
-                                    ? "text-indigo-700 dark:text-indigo-300"
-                                    : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                            }`}
+                            className={`relative z-10 flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-[#0F172A] ${isActive
+                                ? "text-indigo-700 dark:text-indigo-300"
+                                : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                                }`}
                         >
                             <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
                             <span className="truncate">{tab.label}</span>
@@ -689,73 +713,73 @@ export default function NewFormPage() {
             {activeTab === "questions" ? (
                 <>
                     <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
-            >
-                <SortableContext
-                    items={questions.map((q) => q.id)}
-                    strategy={verticalListSortingStrategy}
-                >
-                    <div className="space-y-4">
-                        {questions.map((question, index) => (
-                            <SortableQuestionCard
-                                key={question.id}
-                                question={question}
-                                index={index}
-                                updateQuestion={updateQuestion}
-                                deleteQuestion={deleteQuestion}
-                                addOption={addOption}
-                                updateOption={updateOption}
-                                removeOption={removeOption}
-                            />
-                        ))}
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <SortableContext
+                            items={questions.map((q) => q.id)}
+                            strategy={verticalListSortingStrategy}
+                        >
+                            <div className="space-y-4">
+                                {questions.map((question, index) => (
+                                    <SortableQuestionCard
+                                        key={question.id}
+                                        question={question}
+                                        index={index}
+                                        updateQuestion={updateQuestion}
+                                        deleteQuestion={deleteQuestion}
+                                        addOption={addOption}
+                                        updateOption={updateOption}
+                                        removeOption={removeOption}
+                                    />
+                                ))}
+                            </div>
+                        </SortableContext>
+                    </DndContext>
+
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <button
+                            type="button"
+                            onClick={addQuestion}
+                            disabled={questions.length >= 5}
+                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20"
+                        >
+                            <LuPlus className="h-4 w-4" aria-hidden="true" />
+                            Add Question
+                        </button>
+                        {questions.length >= 5 ? (
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Maximum of 5 questions reached.
+                            </p>
+                        ) : null}
                     </div>
-                </SortableContext>
-            </DndContext>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <button
-                    type="button"
-                    onClick={addQuestion}
-                    disabled={questions.length >= 5}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20"
-                >
-                    <LuPlus className="h-4 w-4" aria-hidden="true" />
-                    Add Question
-                </button>
-                {questions.length >= 5 ? (
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Maximum of 5 questions reached.
-                    </p>
-                ) : null}
-            </div>
-
-            <div className="flex justify-end">
-                <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
-                >
-                    Log Form Data
-                </button>
-            </div>
+                    <div className="flex justify-end">
+                        <button
+                            type="button"
+                            onClick={handleSubmit}
+                            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
+                        >
+                            Log Form Data
+                        </button>
+                    </div>
 
                 </>
             ) : null}
 
             {activeTab === "preview" ? <FormPreview /> : null}
             {activeTab === "chatbot" ? (
-                    <ChatbotSettings
-                        settings={chatbotSettings}
-                        onChange={(updates) =>
-                            setChatbotSettings((prev) => ({
-                                ...prev,
-                                ...updates,
-                            }))
-                        }
-                    />
-                ) : null}
+                <ChatbotSettings
+                    settings={chatbotSettings}
+                    onChange={(updates) =>
+                        setChatbotSettings((prev) => ({
+                            ...prev,
+                            ...updates,
+                        }))
+                    }
+                />
+            ) : null}
         </div>
     );
 }

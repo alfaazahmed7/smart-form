@@ -21,7 +21,7 @@ export async function GET() {
         }
 
         const decoded = jwt.verify(token, secret);
-        console.log(decoded, 'decoded');
+        // console.log(decoded, 'decoded');
 
         if (typeof decoded === 'string' || !decoded.id) {
             return NextResponse.json(

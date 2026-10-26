@@ -92,7 +92,7 @@ const DashboardOverviewPage = () => {
                     </p>
                 </div>
                 <Link
-                    href="/forms/new"
+                    href="/dashboard/forms/new"
                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
                 >
                     <LuPlus className="h-4 w-4" aria-hidden="true" />
