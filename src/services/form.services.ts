@@ -1,5 +1,6 @@
 import { Form } from "@/types/Form";
 
+
 export const formSubmission = async (formData: Form, userId: string) => {
     try {
         const response = await fetch('/api/forms', {

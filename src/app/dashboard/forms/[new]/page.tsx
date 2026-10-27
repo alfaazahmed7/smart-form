@@ -559,6 +559,7 @@ export default function NewFormPage() {
 
         try {
             const data = await formSubmission(submissionData, userId);
+            console.log(data, 'data');
 
             if (data.success) {
                 router.push('/dashboard/forms');
