@@ -1,6 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import {
+    DEFAULT_CHATBOT_SETTINGS,
+    type ChatbotSettings,
+} from "@/components/dashboard/form/new/chatbotSettings";
+import { useEffect, useRef, useState } from "react";
 import {
     LuBot,
     LuMessageCircle,
@@ -8,10 +12,6 @@ import {
     LuSend,
     LuX,
 } from "react-icons/lu";
-import {
-    DEFAULT_CHATBOT_SETTINGS,
-    type ChatbotSettings,
-} from "@/components/dashboard/form/chatbotSettings";
 
 export interface PreviewQuestion {
     id: string;
@@ -252,16 +252,15 @@ export default function FormPreview(props: FormPreviewProps) {
             <div className="relative min-h-[440px] overflow-hidden rounded-2xl border border-gray-200 bg-gray-50/70 p-4 dark:border-gray-800 dark:bg-gray-900/40">
                 {!isOpen ? (
                     <div
-                        className={`absolute bottom-4 flex ${
-                            positionIsLeft ? "left-4 justify-start" : "right-4 justify-end"
-                        }`}
+                        className={`absolute bottom-4 flex ${positionIsLeft ? "left-4 justify-start" : "right-4 justify-end"
+                            }`}
                     >
                         <button
                             type="button"
                             onClick={() => {
-                            startConversation();
-                            setIsOpen(true);
-                        }}
+                                startConversation();
+                                setIsOpen(true);
+                            }}
                             className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                             style={{ backgroundColor: themeColor }}
                         >
@@ -271,9 +270,8 @@ export default function FormPreview(props: FormPreviewProps) {
                     </div>
                 ) : (
                     <div
-                        className={`absolute bottom-4 flex w-[min(calc(100%-2rem),380px)] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900 ${
-                            positionIsLeft ? "left-4" : "right-4"
-                        }`}
+                        className={`absolute bottom-4 flex w-[min(calc(100%-2rem),380px)] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900 ${positionIsLeft ? "left-4" : "right-4"
+                            }`}
                         style={{ maxHeight: "min(70vh, 520px)" }}
                     >
                         <header
@@ -321,16 +319,14 @@ export default function FormPreview(props: FormPreviewProps) {
                             {messages.map((m) => (
                                 <div
                                     key={m.id}
-                                    className={`flex ${
-                                        m.from === "user" ? "justify-end" : "justify-start"
-                                    }`}
+                                    className={`flex ${m.from === "user" ? "justify-end" : "justify-start"
+                                        }`}
                                 >
                                     <div
-                                        className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
-                                            m.from === "user"
+                                        className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${m.from === "user"
                                                 ? "text-white"
                                                 : "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
-                                        }`}
+                                            }`}
                                         style={
                                             m.from === "user"
                                                 ? { backgroundColor: themeColor }
@@ -371,7 +367,7 @@ export default function FormPreview(props: FormPreviewProps) {
                             ) : currentQuestion ? (
                                 <div className="space-y-2">
                                     {currentQuestion.type === "short_text" ||
-                                    currentQuestion.type === "email" ? (
+                                        currentQuestion.type === "email" ? (
                                         <div className="flex items-center gap-2">
                                             <input
                                                 type={

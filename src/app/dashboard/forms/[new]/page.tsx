@@ -1,10 +1,10 @@
 ﻿"use client";
 
+import FormPreview from "@/components/dashboard/form/new/formPreview";
 import ChatbotSettings, {
     DEFAULT_CHATBOT_SETTINGS,
     type ChatbotSettings as ChatbotSettingsType,
-} from "@/components/dashboard/form/chatbotSettings";
-import FormPreview from "@/components/dashboard/form/formPreview";
+} from "@/components/dashboard/form/new/chatbotSettings";
 import { getMe } from "@/services/auth.services";
 import { formSubmission } from "@/services/form.services";
 import {

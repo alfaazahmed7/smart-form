@@ -95,7 +95,6 @@ export async function POST(request: Request) {
 export async function GET() {
     try {
         const token = (await cookies()).get('token')?.value;
-        console.log(token, 'token');
 
         if (!token) {
             return NextResponse.json(

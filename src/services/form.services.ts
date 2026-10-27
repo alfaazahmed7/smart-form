@@ -26,3 +26,20 @@ export const formSubmission = async (formData: Form, userId: string) => {
         console.error('Form submisson failed:', error);
     }
 }
+
+export const getFormById = async (id: string) => {
+    try {
+        const response = await fetch(`/api/forms/${id}`);
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to retrieve form.");
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Get form error:", error);
+        throw error;
+    }
+}
