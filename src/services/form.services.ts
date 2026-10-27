@@ -43,3 +43,19 @@ export const getFormById = async (id: string) => {
         throw error;
     }
 }
+
+export const getFormForEdit = async (id: string) => {
+    try {
+        const response = await fetch(`/api/forms/${id}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to retrieve form.");
+        }
+
+        return data.form;
+    } catch (error) {
+        console.error("Get form for edit error:", error);
+        throw error;
+    }
+};

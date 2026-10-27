@@ -40,9 +40,9 @@ import {
 } from "react-icons/lu";
 import { toast } from "react-toastify";
 
-type QuestionType = "short_text" | "email" | "multiple_choice" | "yes_no";
+export type QuestionType = "short_text" | "email" | "multiple_choice" | "yes_no";
 
-interface Question {
+export interface Question {
     id: string;
     title: string;
     type: QuestionType;
@@ -57,7 +57,7 @@ const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
     yes_no: "Yes/No",
 };
 
-function createQuestion(): Question {
+export function createQuestion(): Question {
     return {
         id: crypto.randomUUID(),
         title: "",
@@ -76,7 +76,7 @@ interface SortableQuestionCardProps {
     removeOption: (id: string, optionIndex: number) => void;
 }
 
-function SortableQuestionCard({
+export function SortableQuestionCard({
     question,
     index,
     updateQuestion,

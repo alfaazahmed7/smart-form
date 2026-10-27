@@ -1,9 +1,10 @@
-﻿'use client';
+'use client';
 
 import { useState } from "react";
-import { getFormById } from "@/services/form.services";
+import { getFormById, getFormForEdit } from "@/services/form.services";
 import { LuEye, LuPencil, LuTrash2, LuArrowLeft, LuLoader, LuTriangleAlert } from "react-icons/lu";
 import FormDetailsView, { type FormDetails } from "./formDetailsView";
+import FormEdit from "./formEdit";
 
 export type FormsTableForm = {
     id: string;
@@ -35,6 +36,10 @@ export default function FormsTable({ forms }: FormsTableProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const [editingForm, setEditingForm] = useState<FormDetails | null>(null);
+    const [editLoading, setEditLoading] = useState(false);
+    const [editError, setEditError] = useState<string | null>(null);
+
     const resetView = () => {
         setSelectedForm(null);
         setError(null);
@@ -61,7 +66,34 @@ export default function FormsTable({ forms }: FormsTableProps) {
         }
     };
 
-    if (isLoading) {
+    const handleFromEdit = async (id: string) => {
+        setEditLoading(true);
+        setEditError(null);
+        setSelectedForm(null);
+        setEditingForm(null);
+        try {
+            const formViewData = (await getFormForEdit(id)) as FormDetails;
+            if (!formViewData) {
+                throw new Error("Failed to retrieve form.");
+            }
+            setEditingForm(formViewData);
+        } catch (err) {
+            setEditError(
+                err instanceof Error
+                    ? err.message
+                    : "Failed to retrieve form."
+            );
+        } finally {
+            setEditLoading(false);
+        }
+    };
+
+    const closeEditor = () => {
+        setEditingForm(null);
+        setEditError(null);
+    };
+
+    if (isLoading || editLoading) {
         return (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-200 bg-gray-50/50 px-6 py-16 text-center dark:border-gray-800 dark:bg-gray-900/40">
                 <LuLoader className="h-6 w-6 animate-spin text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
@@ -72,7 +104,8 @@ export default function FormsTable({ forms }: FormsTableProps) {
         );
     }
 
-    if (error) {
+    const activeError = editError || error;
+    if (activeError) {
         return (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-gray-200 bg-gray-50/50 px-6 py-16 text-center dark:border-gray-800 dark:bg-gray-900/40">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-400">
@@ -82,11 +115,18 @@ export default function FormsTable({ forms }: FormsTableProps) {
                     Couldn&apos;t load form details
                 </h2>
                 <p className="mt-1 max-w-md text-sm text-gray-600 dark:text-gray-400">
-                    {error}
+                    {activeError}
                 </p>
                 <button
                     type="button"
-                    onClick={resetView}
+                    onClick={() => {
+                        if (editError) {
+                            setEditError(null);
+                            closeEditor();
+                        } else {
+                            resetView();
+                        }
+                    }}
                     className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
                 >
                     <LuArrowLeft className="h-4 w-4" aria-hidden="true" />
@@ -98,6 +138,10 @@ export default function FormsTable({ forms }: FormsTableProps) {
 
     if (selectedForm) {
         return <FormDetailsView form={selectedForm} onBack={resetView} />;
+    }
+
+    if (editingForm) {
+        return <FormEdit key={editingForm.id} form={editingForm} onClose={closeEditor} />;
     }
 
     return (
@@ -141,6 +185,7 @@ export default function FormsTable({ forms }: FormsTableProps) {
                                     </button>
                                     <button
                                         type="button"
+                                        onClick={() => handleFromEdit(form.id)}
                                         aria-label="Edit form"
                                         title="Edit"
                                         className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300"
@@ -159,4 +204,3 @@ export default function FormsTable({ forms }: FormsTableProps) {
         </div>
     );
 }
-
