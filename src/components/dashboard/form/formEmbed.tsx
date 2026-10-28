@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import { LuCode, LuCopy, LuX, LuCheck, LuGlobe, LuInfo } from 'react-icons/lu';
+import { LuCode, LuCopy, LuX, LuCheck, LuGlobe, LuInfo, LuExternalLink } from 'react-icons/lu';
 
 export type EmbedForm = {
     id: string;
@@ -47,15 +47,19 @@ export default function FormEmbed({ open, form, onClose }: FormEmbedProps) {
     const cancelButtonRef = useRef<HTMLButtonElement>(null);
     const [copied, setCopied] = useState(false);
     const [isCopying, setIsCopying] = useState(false);
+    const [urlCopied, setUrlCopied] = useState(false);
+    const [isCopyingUrl, setIsCopyingUrl] = useState(false);
 
     const appUrl =
         (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_APP_URL) ||
         (typeof window !== 'undefined' ? window.location.origin : '');
-        console.log(appUrl, 'appUrl');
 
     const isPublished = (form?.status || '').toLowerCase() === 'published';
     const isLocalhost =
         appUrl.includes('localhost') || appUrl.includes('127.0.0.1');
+
+    const publicId = form?.public_id ?? '';
+    const publicUrl = `${process.env.NEXT_PUBLIC_APP_URL}/forms/${publicId}`;
 
     const snippet = form
         ? `<script
@@ -106,6 +110,27 @@ export default function FormEmbed({ open, form, onClose }: FormEmbedProps) {
         } finally {
             setIsCopying(false);
         }
+    };
+
+    const handleCopyUrl = async () => {
+        if (!publicUrl) return;
+        setIsCopyingUrl(true);
+        try {
+            await navigator.clipboard.writeText(publicUrl);
+            setUrlCopied(true);
+            toast.success('Public chatbot URL copied to clipboard');
+            window.setTimeout(() => setUrlCopied(false), 2000);
+        } catch (error) {
+            console.error('Copy public URL error:', error);
+            toast.error('Failed to copy URL. Please copy it manually.');
+        } finally {
+            setIsCopyingUrl(false);
+        }
+    };
+
+    const handleOpenUrl = () => {
+        if (!publicUrl) return;
+        window.open(publicUrl, '_blank', 'noopener,noreferrer');
     };
 
     if (!open || !form) return null;
@@ -264,6 +289,53 @@ export default function FormEmbed({ open, form, onClose }: FormEmbedProps) {
                             </div>
                         </section>
                     ) : null}
+
+                    <section className="space-y-3">
+                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                            Public chatbot URL
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Share this link to open the interactive chatbot in a new
+                            tab.
+                        </p>
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                            <input
+                                type="text"
+                                readOnly
+                                value={publicUrl}
+                                aria-label="Public chatbot URL"
+                                className="h-10 min-w-0 flex-1 rounded-xl border border-gray-200 bg-gray-50 px-3.5 text-sm font-mono text-gray-900 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                            />
+                            <div className="flex shrink-0 flex-wrap gap-2">
+                                <button
+                                    type="button"
+                                    onClick={handleCopyUrl}
+                                    disabled={isCopyingUrl}
+                                    className="inline-flex h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl border border-gray-200 bg-white px-3.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                                >
+                                    {urlCopied ? (
+                                        <>
+                                            <LuCheck className="h-4 w-4" aria-hidden="true" />
+                                            Copied
+                                        </>
+                                    ) : (
+                                        <>
+                                            <LuCopy className="h-4 w-4" aria-hidden="true" />
+                                            Copy URL
+                                        </>
+                                    )}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleOpenUrl}
+                                    className="inline-flex h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl bg-indigo-600 px-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
+                                >
+                                    <LuExternalLink className="h-4 w-4" aria-hidden="true" />
+                                    Open in New Tab
+                                </button>
+                            </div>
+                        </div>
+                    </section>
 
                     <section className="space-y-3">
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
