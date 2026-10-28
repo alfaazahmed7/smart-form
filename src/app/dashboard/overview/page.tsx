@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getDashboardOverview } from "@/services/form.server.services";
-import SubmissionActivityChart from "@/components/dashboard/submissionActivityChart";
+import SubmissionActivityChart from "@/components/dashboard/overview/submissionActivityChart";
 import {
     LuArrowRight,
     LuChartBar,

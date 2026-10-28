@@ -1,6 +1,3 @@
-// export const dynamic = "force-dynamic";
-
-
 import { connection } from "next/server";
 import { pool } from "@/lib/db";
 import { NextResponse } from "next/server";

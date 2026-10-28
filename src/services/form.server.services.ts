@@ -46,3 +46,27 @@ export const getDashboardOverview = async () => {
         console.error('Dashboard overview fetch failed:', error);
     }
 };
+
+export const getSubmissionsServer = async () => {
+    const cookieStore = await cookies();
+    const cookieHeader = cookieStore.toString();
+
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/submissions`, {
+            headers: {
+                Cookie: cookieHeader,
+            },
+            cache: "no-store",
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+            return { success: false, message: data?.message || "Failed to fetch submissions." };
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Submissions fetch failed:", error);
+        return { success: false, message: "Failed to fetch submissions." };
+    }
+};
