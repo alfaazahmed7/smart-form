@@ -4,8 +4,6 @@ import { LuFileText, LuPlus, LuTriangleAlert } from "react-icons/lu";
 import FormsTable, { type FormsTableForm } from "@/components/dashboard/form/formsTable";
 export const instant = false;
 
-
-
 const DashboardFormsPage = async () => {
     const result = await getFroms();
     const success = result?.success === true;
