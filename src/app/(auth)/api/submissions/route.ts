@@ -1,12 +1,14 @@
 // export const dynamic = "force-dynamic";
 
 
+import { connection } from "next/server";
 import { pool } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { CurrentUserDecodedId } from "@/services/reusable.services";
 import jwt from "jsonwebtoken";
 
 export async function GET() {
+    await connection();
     try {
         const userId = await CurrentUserDecodedId();
 

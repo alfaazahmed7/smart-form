@@ -1,4 +1,5 @@
 
+import { connection } from "next/server";
 import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
 import { CurrentUserDecodedId } from "@/services/reusable.services";
@@ -9,6 +10,7 @@ export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
+    await connection();
     try {
         const { id } = await params;
 
