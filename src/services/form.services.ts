@@ -1,6 +1,5 @@
 import { Form } from "@/types/Form";
 
-
 export const formSubmission = async (formData: Form, userId: string) => {
     try {
         const response = await fetch('/api/forms', {
@@ -56,6 +55,32 @@ export const getFormForEdit = async (id: string) => {
         return data.form;
     } catch (error) {
         console.error("Get form for edit error:", error);
+        throw error;
+    }
+};
+
+export const updateForm = async (
+    id: string,
+    formData: Form
+) => {
+    try {
+        const response = await fetch(`/api/forms/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to update form.");
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Update form error:", error);
         throw error;
     }
 };

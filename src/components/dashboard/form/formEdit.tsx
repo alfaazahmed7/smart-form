@@ -16,7 +16,7 @@ import {
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { LuEye, LuPencil, LuTrash2, LuX, LuCheck, LuSettings, LuPlus } from "react-icons/lu";
+import { LuEye, LuPencil, LuTrash2, LuX, LuCheck, LuSettings, LuPlus, LuArrowLeft } from "react-icons/lu";
 import { type FormDetails } from "./formDetailsView";
 import ChatbotSettings, {
     DEFAULT_CHATBOT_SETTINGS,
@@ -29,6 +29,8 @@ import {
     createQuestion,
     SortableQuestionCard,
 } from "@/app/dashboard/forms/[new]/page";
+import { updateForm } from "@/services/form.services";
+import { toast } from "react-toastify";
 
 interface FormEditProps {
     form: FormDetails;
@@ -41,8 +43,8 @@ function StatusBadge({ status }: { status: string }) {
     return (
         <span
             className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${isPublished
-                    ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300"
-                    : "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300"
+                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300"
+                : "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300"
                 }`}
         >
             <span
@@ -182,18 +184,6 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
         );
     };
 
-    const handleSaveChanges = () => {
-        console.log(
-            {
-                title,
-                description,
-                questions,
-                settings: chatbotSettings,
-            },
-            "form update data"
-        );
-    };
-
     const submissionData = {
         title,
         description,
@@ -201,10 +191,31 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
         settings: chatbotSettings,
     };
 
+    const handleSaveChanges = async () => {
+        try {
+            const data = await updateForm(form.id, submissionData);
+            if (data.success) {
+                toast.success(`Form updated successfully`);
+            }
+        }
+        catch (error) {
+            toast.error(`Form update failed`);
+        }
+    };
+
+
     return (
         <div className="space-y-6">
             <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 mb-4"
+                    >
+                        <LuArrowLeft className="h-4 w-4" aria-hidden="true" />
+                        Back to forms
+                    </button>
                     <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
                         Edit Form
                     </h1>
@@ -247,8 +258,8 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                                 type="button"
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`relative z-10 inline-flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
-                                        ? "text-indigo-700 dark:text-indigo-300"
-                                        : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+                                    ? "text-indigo-700 dark:text-indigo-300"
+                                    : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
                                     }`}
                             >
                                 <Icon className="h-4 w-4" aria-hidden="true" />
