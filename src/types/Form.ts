@@ -22,3 +22,20 @@ export interface Form {
         allowRestart: boolean;
     };
 }
+
+export interface SubmissionAnswer {
+    questionId: string;
+    question: string;
+    type: string;
+    answer: string;
+}
+
+export interface Submission {
+    id: string;
+    form_id: string;
+    form_title: string;
+    answers: {
+        answers: SubmissionAnswer[];
+    } | null;
+    submitted_at: string;
+}

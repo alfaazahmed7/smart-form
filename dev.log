@@ -1,0 +1,68 @@
+
+> client@0.1.0 dev
+> next dev
+
+▲ Next.js 16.4.2 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.7:3000
+- Environments: .env
+✓ Ready in 489ms
+✓ Running next.config.ts took 52ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+(node:10456) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
+In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+
+To prepare for this change:
+- If you want the current behavior, explicitly use 'sslmode=verify-full'
+- If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+
+See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ GET /api/public/forms/ad2cd3ae-27ef-4021-8bcd-b2a5709c174c 200 in 4.1s (next.js: 838ms, application-code: 3.2s)
+ GET /api/public/forms/385be4e3-f670-4a5a-92f9-bca8e9f337ce 404 in 300ms (next.js: 8ms, application-code: 292ms)
+ POST /api/public/forms/ad2cd3ae-27ef-4021-8bcd-b2a5709c174c/submissions 201 in 2.1s (next.js: 685ms, application-code: 1456ms)
+ POST /api/public/forms/ad2cd3ae-27ef-4021-8bcd-b2a5709c174c/submissions 400 in 584ms (next.js: 8ms, application-code: 576ms)
+ POST /api/public/forms/ad2cd3ae-27ef-4021-8bcd-b2a5709c174c/submissions 400 in 585ms (next.js: 9ms, application-code: 576ms)
+ POST /api/login 401 in 349ms (next.js: 32ms, application-code: 317ms)
+Tester tester999@example.com password123 data
+$2b$12$SIDIxy09DUKYNDVcidMlce.HnxCcpF.gFC0Rd9LNz629ZXBU21XHe passwordHash
+ POST /api/register 201 in 684ms (next.js: 28ms, application-code: 655ms)
+ GET /api/forms/a3069432-6f65-4245-9ccf-89bd887ac98e/submissions 401 in 710ms (next.js: 699ms, application-code: 11ms)
+ POST /api/login 200 in 655ms (next.js: 3ms, application-code: 653ms)
+ GET /api/forms/a3069432-6f65-4245-9ccf-89bd887ac98e/submissions 404 in 380ms (next.js: 9ms, application-code: 371ms)
+Test Form  [
+  {
+    title: 'Name',
+    options: [],
+    id: 'q1',
+    type: 'short_text',
+    required: true
+  }
+] {
+  autoOpenDelaySeconds: 5,
+  showProgressIndicator: true,
+  inputPlaceholder: 'Type',
+  allowRestart: true,
+  welcomeMessage: 'Hi',
+  openingBehavior: 'Manual',
+  chatbotPosition: 'Bottom right',
+  launcherButtonText: 'Chat',
+  themeColor: '#6366F1',
+  completionMessage: 'Done',
+  showBranding: true
+} 2a009819-4af8-4e99-b9b9-c1a8c27c02e6 all the data
+ POST /api/forms 201 in 3.8s (next.js: 24ms, application-code: 3.8s)
+ POST /api/public/forms/6cd1579d-5bfd-452c-b40e-1b694832d0bb/submissions 400 in 593ms (next.js: 9ms, application-code: 584ms)
+ GET /api/public/forms/6cd1579d-5bfd-452c-b40e-1b694832d0bb 200 in 880ms (next.js: 7ms, application-code: 873ms)
+ POST /api/public/forms/6cd1579d-5bfd-452c-b40e-1b694832d0bb/submissions 201 in 1456ms (next.js: 10ms, application-code: 1446ms)
+ POST /api/login 200 in 646ms (next.js: 1.0ms, application-code: 645ms)
+ GET /api/forms/dcc28225-34c1-4649-9f2f-265a8dd63b34/submissions 200 in 602ms (next.js: 8ms, application-code: 594ms)
+Other other999@example.com password123 data
+$2b$12$iWwV1kzThc5rC1dwZ.RzNOzGgeXINvWjWu2NQ1VUIpGNRK4dUyw4C passwordHash
+ POST /api/register 201 in 626ms (next.js: 1.1ms, application-code: 625ms)
+ POST /api/login 200 in 654ms (next.js: 2ms, application-code: 652ms)
+ GET /api/forms/dcc28225-34c1-4649-9f2f-265a8dd63b34/submissions 404 in 313ms (next.js: 7ms, application-code: 306ms)
+
+D:\Codes\Full-Stack Projects\smart-form>More? 

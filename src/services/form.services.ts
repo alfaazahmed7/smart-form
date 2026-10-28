@@ -103,3 +103,62 @@ export const deleteForm = async (id: string) => {
         throw error;
     }
 };
+export const getPublicForm = async (publicId: string) => {
+    try {
+        const response = await fetch(`/api/public/forms/${publicId}`);
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data?.message || "Failed to load form.");
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Get public form error:", error);
+        throw error;
+    }
+};
+
+export const submitPublicForm = async (
+    publicId: string,
+    answers: { questionId: string; answer: string }[]
+) => {
+    try {
+        const response = await fetch(`/api/public/forms/${publicId}/submissions`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ answers }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data?.message || "Failed to submit form.");
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Submit public form error:", error);
+        throw error;
+    }
+};
+
+export const getSubmissions = async () => {
+    try {
+        const response = await fetch("/api/submissions");
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data?.message || "Failed to fetch submissions.");
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Get submissions error:", error);
+        throw error;
+    }
+};
