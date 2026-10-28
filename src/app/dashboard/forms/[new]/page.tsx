@@ -216,7 +216,7 @@ export function SortableQuestionCard({
                         ref={setActivatorNodeRef}
                         {...listeners}
                         {...attributes}
-                        className="inline-flex h-9 w-9 cursor-grab items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 active:cursor-grabbing dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                        className="inline-flex h-9 w-9 cursor-grab items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 active:cursor-grabbing dark:hover:bg-gray-800 dark:hover:text-gray-300 cursor-pointer"
                         aria-label="Drag to reorder question"
                         title="Drag to reorder"
                     >
@@ -249,7 +249,7 @@ export function SortableQuestionCard({
                                 aria-label="Question type"
                                 onClick={() => setIsTypeOpen((open) => !open)}
                                 onKeyDown={handleTypeButtonKeyDown}
-                                className="inline-flex w-full items-center justify-between gap-2 rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition hover:border-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900/40 dark:text-white dark:hover:border-gray-600"
+                                className="inline-flex w-full items-center justify-between gap-2 rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 outline-none transition hover:border-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900/40 dark:text-white dark:hover:border-gray-600 cursor-pointer"
                             >
                                 <span className="truncate">
                                     {QUESTION_TYPE_LABELS[question.type]}
@@ -366,7 +366,7 @@ export function SortableQuestionCard({
                                                 onClick={() =>
                                                     removeOption(question.id, optionIndex)
                                                 }
-                                                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:bg-red-500/10 dark:hover:text-red-400"
+                                                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:bg-red-500/10 dark:hover:text-red-400 cursor-pointer"
                                                 aria-label="Remove option"
                                                 title="Remove option"
                                             >
@@ -380,7 +380,7 @@ export function SortableQuestionCard({
                                 type="button"
                                 onClick={() => addOption(question.id)}
                                 disabled={question.options.length >= 3}
-                                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-indigo-200 bg-indigo-50/40 px-3 py-2.5 text-sm font-medium text-indigo-600 transition hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-500/30 dark:bg-indigo-500/5 dark:text-indigo-300 dark:hover:border-indigo-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-200"
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-indigo-200 bg-indigo-50/40 px-3 py-2.5 text-sm font-medium text-indigo-600 transition hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-500/30 dark:bg-indigo-500/5 dark:text-indigo-300 dark:hover:border-indigo-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-200 cursor-pointer"
                             >
                                 <LuPlus className="h-4 w-4" aria-hidden="true" />
                                 Add option
@@ -398,7 +398,7 @@ export function SortableQuestionCard({
                 <div className="flex items-center gap-1">
                     <button
                         type="button"
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-300 cursor-pointer"
                         aria-label="Edit question"
                         title="Edit question"
                     >
@@ -407,7 +407,7 @@ export function SortableQuestionCard({
                     <button
                         type="button"
                         onClick={() => deleteQuestion(question.id)}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition hover:bg-gray-100 hover:text-red-600 dark:hover:bg-gray-800 dark:hover:text-red-400"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition hover:bg-gray-100 hover:text-red-600 dark:hover:bg-gray-800 dark:hover:text-red-400 cursor-pointer"
                         aria-label="Delete question"
                         title="Delete question"
                     >
@@ -590,7 +590,7 @@ export default function NewFormPage() {
                     <div>
                         <label
                             htmlFor="form-title"
-                            className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
                         >
                             Form title <span className="text-red-500">*</span>
                         </label>
@@ -621,7 +621,7 @@ export default function NewFormPage() {
                     <div>
                         <label
                             htmlFor="form-description"
-                            className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
                         >
                             Form description
                         </label>
@@ -638,7 +638,7 @@ export default function NewFormPage() {
                     <button
                         type="button"
                         onClick={handleCreateForm}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                     >
                         <LuPlus className="h-4 w-4" aria-hidden="true" />
                         Create Form
@@ -704,7 +704,7 @@ export default function NewFormPage() {
                             className={`relative z-10 flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-[#0F172A] ${isActive
                                 ? "text-indigo-700 dark:text-indigo-300"
                                 : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                                }`}
+                                } cursor-pointer`}
                         >
                             <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
                             <span className="truncate">{tab.label}</span>
@@ -746,7 +746,7 @@ export default function NewFormPage() {
                             type="button"
                             onClick={addQuestion}
                             disabled={questions.length >= 5}
-                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20"
+                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20 cursor-pointer"
                         >
                             <LuPlus className="h-4 w-4" aria-hidden="true" />
                             Add Question

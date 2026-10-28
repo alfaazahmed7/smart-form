@@ -171,7 +171,7 @@ export default function FormsTable({ forms }: FormsTableProps) {
                             resetView();
                         }
                     }}
-                    className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
+                    className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                 >
                     <LuArrowLeft className="h-4 w-4" aria-hidden="true" />
                     Back to forms
@@ -224,7 +224,7 @@ export default function FormsTable({ forms }: FormsTableProps) {
                                             onClick={() => handleFormView(form.id)}
                                             aria-label="View form"
                                             title="View"
-                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300"
+                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300 cursor-pointer"
                                         >
                                             <LuEye className="h-4 w-4" aria-hidden="true" />
                                         </button>
@@ -233,7 +233,7 @@ export default function FormsTable({ forms }: FormsTableProps) {
                                             onClick={() => handleFromEdit(form.id)}
                                             aria-label="Edit form"
                                             title="Edit"
-                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300"
+                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300 cursor-pointer"
                                         >
                                             <LuPencil className="h-4 w-4" aria-hidden="true" />
                                         </button>
@@ -243,7 +243,7 @@ export default function FormsTable({ forms }: FormsTableProps) {
                                             disabled={embedLoading}
                                             aria-label="Embed form"
                                             title="Embed"
-                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300"
+                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300 cursor-pointer"
                                         >
                                             <LuCode className="h-4 w-4" aria-hidden="true" />
                                         </button>
@@ -252,7 +252,7 @@ export default function FormsTable({ forms }: FormsTableProps) {
                                             onClick={() => setDeleteTarget({ id: form.id, title: form.title })}
                                             aria-label="Delete form"
                                             title="Delete"
-                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 dark:text-gray-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-400">
+                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 dark:text-gray-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-400 cursor-pointer">
                                             <LuTrash2 className="h-4 w-4"
                                                 aria-hidden="true" />
                                         </button>

@@ -130,7 +130,7 @@ export default function FormDetailsView({
                 <button
                     type="button"
                     onClick={onBack}
-                    className="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 cursor-pointer"
                 >
                     <LuArrowLeft className="h-4 w-4" aria-hidden="true" />
                     Back to forms

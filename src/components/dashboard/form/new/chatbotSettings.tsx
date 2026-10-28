@@ -126,7 +126,7 @@ function SegmentedControl<T extends string>({
                         className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${selected
                                 ? "bg-indigo-600 text-white shadow-sm dark:bg-indigo-500"
                                 : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                            }`}
+                            } cursor-pointer`}
                     >
                         {option}
                     </button>
@@ -160,7 +160,7 @@ function Field({
                 ) : null}
                 <label
                     htmlFor={id}
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                    className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
                 >
                     {label}
                 </label>
@@ -327,7 +327,7 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                                     className={`h-7 w-7 rounded-full border-2 transition hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${settings.themeColor.toLowerCase() === color.toLowerCase()
                                             ? "border-indigo-500 scale-110"
                                             : "border-transparent"
-                                        }`}
+                                        } cursor-pointer`}
                                     style={{ backgroundColor: color }}
                                 />
                             ))}
@@ -512,7 +512,7 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                                 >
                                     <button
                                         type="button"
-                                        className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-white shadow-sm"
+                                        className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-white shadow-sm cursor-pointer"
                                         style={{ backgroundColor: settings.themeColor }}
                                     >
                                         <LuMessageCircle className="h-4 w-4" aria-hidden="true" />

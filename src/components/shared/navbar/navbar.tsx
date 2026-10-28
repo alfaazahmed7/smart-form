@@ -81,7 +81,7 @@ export default function Navbar() {
   const [user, setUser] = useState<User>();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
-  // console.log(user, 'user');
+  console.log(user, 'user');
 
   /* Sticky scroll effect */
   useEffect(() => {

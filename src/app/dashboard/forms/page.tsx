@@ -20,7 +20,7 @@ const DashboardFormsPage = async () => {
     return (
         <div className="space-y-6">
             <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
+                <div className="min-w-0">
                     <h1 className="text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
                         My Forms
                     </h1>
@@ -28,10 +28,19 @@ const DashboardFormsPage = async () => {
                         Manage your forms, preview their content, and keep everything organized in one place.
                     </p>
                 </div>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300">
-                    <LuFileText className="h-3.5 w-3.5" aria-hidden="true" />
-                    {forms.length} {forms.length === 1 ? "form" : "forms"}
-                </span>
+                <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
+                    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300">
+                        <LuFileText className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                        {forms.length} {forms.length === 1 ? "form" : "forms"}
+                    </span>
+                    <Link
+                        href="/dashboard/forms/new"
+                        className="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
+                    >
+                        <LuPlus className="h-4 w-4" aria-hidden="true" />
+                        Create Form
+                    </Link>
+                </div>
             </header>
 
             {!success ? (
@@ -59,7 +68,7 @@ const DashboardFormsPage = async () => {
                     </p>
                     <Link
                         href="/dashboard/forms/new"
-                        className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
+                        className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                     >
                         <LuPlus className="h-4 w-4" aria-hidden="true" />
                         Create Form

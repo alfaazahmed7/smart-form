@@ -54,12 +54,12 @@ export default function DashboardSidebar() {
                             aria-label="Open navigation menu"
                             aria-expanded={mobileOpen}
                             aria-controls="mobile-dashboard-menu"
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A]"
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                         >
                             <LuMenu className="h-5 w-5" aria-hidden="true" />
                         </button>
                         <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                            <Link href='/'>
+                            <Link href='/' className="cursor-pointer">
                                 SmartForm
                             </Link>
                         </span>
@@ -68,7 +68,7 @@ export default function DashboardSidebar() {
                         type="button"
                         onClick={() => setTheme(isDark ? "light" : "dark")}
                         aria-label={mounted ? `Switch to ${isDark ? "light" : "dark"} mode` : "Toggle theme"}
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A]"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                     >
                         {isDark ? (
                             <LuSun className="h-5 w-5" aria-hidden="true" />
@@ -88,7 +88,7 @@ export default function DashboardSidebar() {
                 aria-hidden={!mobileOpen}
             >
                 <div
-                    className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/40 backdrop-blur-sm cursor-pointer"
                     onClick={() => setMobileOpen(false)}
                 />
                 <aside
@@ -103,7 +103,7 @@ export default function DashboardSidebar() {
                             type="button"
                             onClick={() => setMobileOpen(false)}
                             aria-label="Close navigation menu"
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A]"
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                         >
                             <LuX className="h-5 w-5" aria-hidden="true" />
                         </button>
@@ -122,7 +122,7 @@ export default function DashboardSidebar() {
                                             className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A] ${active
                                                 ? "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300"
                                                 : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/60 hover:text-gray-900 dark:hover:text-white"
-                                                }`}
+                                                } cursor-pointer`}
                                         >
                                             <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
                                             <span className="truncate">{item.label}</span>
@@ -148,7 +148,7 @@ export default function DashboardSidebar() {
                 <div className="flex items-center justify-between border-b border-gray-200/70 dark:border-gray-800/70 px-3 py-3">
                     {!collapsed && (
                         <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                            <Link href='/'>SmartForm</Link>
+                            <Link href='/' className="cursor-pointer">SmartForm</Link>
                         </span>
                     )}
                     <div className="flex items-center gap-2">
@@ -157,7 +157,7 @@ export default function DashboardSidebar() {
                                 type="button"
                                 onClick={() => setTheme(isDark ? "light" : "dark")}
                                 aria-label={mounted ? `Switch to ${isDark ? "light" : "dark"} mode` : "Toggle theme"}
-                                className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A]"
+                                className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                             >
                                 {isDark ? (
                                     <LuSun className="h-5 w-5" aria-hidden="true" />
@@ -171,7 +171,7 @@ export default function DashboardSidebar() {
                             onClick={() => setCollapsed((value) => !value)}
                             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
                             aria-expanded={!collapsed}
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A]"
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                         >
                             {collapsed ? (
                                 <LuPanelLeftOpen className="h-5 w-5" aria-hidden="true" />
@@ -197,7 +197,7 @@ export default function DashboardSidebar() {
                                             } ${active
                                                 ? "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300"
                                                 : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/60 hover:text-gray-900 dark:hover:text-white"
-                                            }`}
+                                            } cursor-pointer`}
                                     >
                                         {active && (
                                             <span

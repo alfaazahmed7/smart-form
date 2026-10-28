@@ -261,7 +261,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                 startConversation();
                                 setIsOpen(true);
                             }}
-                            className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                            className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 cursor-pointer"
                             style={{ backgroundColor: themeColor }}
                         >
                             <LuMessageCircle className="h-4 w-4" aria-hidden="true" />
@@ -286,7 +286,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                 type="button"
                                 onClick={closeChat}
                                 aria-label="Close chat"
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-full text-white/90 transition hover:bg-white/15"
+                                className="inline-flex h-7 w-7 items-center justify-center rounded-full text-white/90 transition hover:bg-white/15 cursor-pointer"
                             >
                                 <LuX className="h-4 w-4" aria-hidden="true" />
                             </button>
@@ -353,7 +353,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                         <button
                                             type="button"
                                             onClick={restart}
-                                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+                                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 cursor-pointer"
                                         >
                                             <LuRotateCcw className="h-4 w-4" aria-hidden="true" />
                                             Restart
@@ -392,7 +392,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                             <button
                                                 type="button"
                                                 onClick={submitText}
-                                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-sm transition hover:opacity-95"
+                                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-sm transition hover:opacity-95 cursor-pointer"
                                                 style={{ backgroundColor: themeColor }}
                                                 aria-label="Send answer"
                                             >
@@ -411,7 +411,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                                             key={idx}
                                                             type="button"
                                                             onClick={() => submitChoice(option)}
-                                                            className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-indigo-300 hover:bg-indigo-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                                                            className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-indigo-300 hover:bg-indigo-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
                                                         >
                                                             {option}
                                                         </button>
@@ -421,7 +421,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                                 <button
                                                     type="button"
                                                     onClick={handleSkip}
-                                                    className="text-xs font-medium text-gray-500 underline-offset-2 hover:underline dark:text-gray-400"
+                                                    className="text-xs font-medium text-gray-500 underline-offset-2 hover:underline dark:text-gray-400 cursor-pointer"
                                                 >
                                                     Skip
                                                 </button>
@@ -435,7 +435,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                                 <button
                                                     type="button"
                                                     onClick={() => submitChoice("Yes")}
-                                                    className="flex-1 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-95"
+                                                    className="flex-1 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 cursor-pointer"
                                                     style={{ backgroundColor: themeColor }}
                                                 >
                                                     Yes
@@ -443,7 +443,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                                 <button
                                                     type="button"
                                                     onClick={() => submitChoice("No")}
-                                                    className="flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                                                    className="flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 cursor-pointer"
                                                 >
                                                     No
                                                 </button>
@@ -452,7 +452,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                                 <button
                                                     type="button"
                                                     onClick={handleSkip}
-                                                    className="text-xs font-medium text-gray-500 underline-offset-2 hover:underline dark:text-gray-400"
+                                                    className="text-xs font-medium text-gray-500 underline-offset-2 hover:underline dark:text-gray-400 cursor-pointer"
                                                 >
                                                     Skip
                                                 </button>

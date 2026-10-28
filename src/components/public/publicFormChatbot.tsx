@@ -93,6 +93,7 @@ export default function PublicFormChatbot({
         }
 
         initial.push({ id: idRef.current++, from: "bot", text: questions[0].title });
+        setMessages(initial);
     };
 
     const startConversationRef = useRef(startConversation);

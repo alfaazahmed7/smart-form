@@ -211,7 +211,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                     <button
                         type="button"
                         onClick={onClose}
-                        className="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 mb-4"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 mb-4 cursor-pointer"
                     >
                         <LuArrowLeft className="h-4 w-4" aria-hidden="true" />
                         Back to forms
@@ -229,7 +229,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                         type="button"
                         onClick={onClose}
                         aria-label="Close editor"
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:bg-gray-800 dark:hover:text-gray-300 cursor-pointer"
                     >
                         <LuX className="h-5 w-5" aria-hidden="true" />
                     </button>
@@ -260,7 +260,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                                 className={`relative z-10 inline-flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
                                     ? "text-indigo-700 dark:text-indigo-300"
                                     : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                                    }`}
+                                    } cursor-pointer`}
                             >
                                 <Icon className="h-4 w-4" aria-hidden="true" />
                                 {tab.label}
@@ -275,7 +275,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                             <div>
                                 <label
                                     htmlFor="edit-form-title"
-                                    className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
                                 >
                                     Form title <span className="text-red-500">*</span>
                                 </label>
@@ -291,7 +291,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                             <div>
                                 <label
                                     htmlFor="edit-form-description"
-                                    className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
                                 >
                                     Form description
                                 </label>
@@ -337,7 +337,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                                 type="button"
                                 onClick={addQuestion}
                                 disabled={questions.length >= 5}
-                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20 cursor-pointer"
                             >
                                 <LuPlus className="h-4 w-4" aria-hidden="true" />
                                 Add Question
@@ -376,7 +376,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                 <button
                     type="button"
                     onClick={handleSaveChanges}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A] cursor-pointer"
                 >
                     <LuCheck className="h-4 w-4" aria-hidden="true" />
                     Save Changes
