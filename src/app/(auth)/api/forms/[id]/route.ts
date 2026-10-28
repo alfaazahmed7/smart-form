@@ -221,3 +221,48 @@ export async function PUT(
         client.release();
     }
 }
+
+export async function DELETE(
+    request: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        const { id } = await params;
+
+        const userId = await CurrentUserDecodedId();
+        console.log(userId, 'userId');
+
+        const result = await pool.query(
+            `DELETE FROM forms
+       WHERE id = $1 AND owner_id = $2
+       RETURNING id`,
+            [id, userId]
+        );
+
+        if (result.rows.length === 0) {
+            return NextResponse.json(
+                { success: false, message: "Form not found." },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json({
+            success: true,
+            message: "Form deleted successfully.",
+        });
+    } catch (error) {
+        if (error instanceof jwt.JsonWebTokenError) {
+            return NextResponse.json(
+                { success: false, message: "Invalid session." },
+                { status: 401 }
+            );
+        }
+
+        console.error("Delete form error:", error);
+
+        return NextResponse.json(
+            { success: false, message: "Failed to delete form." },
+            { status: 500 }
+        );
+    }
+}

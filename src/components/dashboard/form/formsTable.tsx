@@ -1,10 +1,13 @@
-'use client';
+﻿'use client';
 
 import { useState } from "react";
-import { getFormById, getFormForEdit } from "@/services/form.services";
+import { deleteForm, getFormById, getFormForEdit } from "@/services/form.services";
 import { LuEye, LuPencil, LuTrash2, LuArrowLeft, LuLoader, LuTriangleAlert } from "react-icons/lu";
 import FormDetailsView, { type FormDetails } from "./formDetailsView";
 import FormEdit from "./formEdit";
+import FormDelete from "./formDelete";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export type FormsTableForm = {
     id: string;
@@ -40,10 +43,14 @@ export default function FormsTable({ forms }: FormsTableProps) {
     const [editLoading, setEditLoading] = useState(false);
     const [editError, setEditError] = useState<string | null>(null);
 
+    const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+
     const resetView = () => {
         setSelectedForm(null);
         setError(null);
     };
+
+    const router = useRouter();
 
     const handleFormView = async (id: string) => {
         setIsLoading(true);
@@ -92,6 +99,16 @@ export default function FormsTable({ forms }: FormsTableProps) {
         setEditingForm(null);
         setEditError(null);
     };
+
+    const handleFormDelete = async (id: string) => {
+        const form = await deleteForm(id);
+        console.log(form, 'form');
+        if (form.success) {
+            toast.success('Form deleted successfully');
+            router.refresh();
+        }
+        return form;
+    }
 
     if (isLoading || editLoading) {
         return (
@@ -145,6 +162,7 @@ export default function FormsTable({ forms }: FormsTableProps) {
     }
 
     return (
+        <>
         <div className="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-800">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
                 <thead className="bg-gray-50 dark:bg-gray-900/60">
@@ -194,7 +212,13 @@ export default function FormsTable({ forms }: FormsTableProps) {
                                     </button>
                                     <button
                                         type="button"
-                                        aria-label="Delete form" title="Delete" className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 dark:text-gray-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"><LuTrash2 className="h-4 w-4" aria-hidden="true" /></button>
+                                        onClick={() => setDeleteTarget({ id: form.id, title: form.title })}
+                                        aria-label="Delete form"
+                                        title="Delete"
+                                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 dark:text-gray-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-400">
+                                        <LuTrash2 className="h-4 w-4"
+                                            aria-hidden="true" />
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -202,5 +226,13 @@ export default function FormsTable({ forms }: FormsTableProps) {
                 </tbody>
             </table>
         </div>
+        <FormDelete
+            open={!!deleteTarget}
+            formId={deleteTarget?.id ?? null}
+            formTitle={deleteTarget?.title}
+            onClose={() => setDeleteTarget(null)}
+            onDelete={handleFormDelete}
+        />
+        </>
     );
 }
