@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { LuListChecks, LuMoon, LuSun, LuUser, LuChevronDown, LuLayoutDashboard, LuLogOut } from "react-icons/lu";
 import { useEffect, useState, useSyncExternalStore, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { getMe, logoutUser } from "@/services/auth.services";
 
 /* Hydration-safe "mounted" detection (no setState in effect) */
@@ -13,10 +13,10 @@ const getIsClient = () => true;
 const getIsServer = () => false;
 
 const NAV_LINKS = [
-  { label: "Home", href: "#home", id: "home" },
-  { label: "Features", href: "#features", id: "features" },
-  { label: "How It Works", href: "#how-it-works", id: "how-it-works" },
-  { label: "Contact", href: "#contact", id: "contact" },
+  { label: "Home", href: "/", id: "home" },
+  { label: "How It Works", href: "/how-it-works", id: "how-it-works" },
+  { label: "About Us", href: "/about", id: "about" },
+  { label: "Contact", href: "/contact", id: "contact" },
 ] as const;
 
 export function Logo() {
@@ -75,9 +75,10 @@ interface User {
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [activeId, setActiveId] = useState<string>("home");
+  // activeId removed; middle links are now page routes tracked via pathname
   const [user, setUser] = useState<User>();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
@@ -91,17 +92,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Track active section + close mobile menu on navigation */
-  useEffect(() => {
-    const update = () => {
-      const hash = window.location.hash.replace("#", "");
-      setActiveId(hash || "home");
-      setOpen(false);
-    };
-    update();
-    window.addEventListener("hashchange", update);
-    return () => window.removeEventListener("hashchange", update);
-  }, []);
+  /* Close mobile menu on Escape handled elsewhere; route changes close via Link onClick */
 
   /* Close mobile menu on Escape and lock background scroll while open */
   useEffect(() => {
@@ -196,7 +187,7 @@ export default function Navbar() {
           {/* Center: navigation links (desktop) */}
           <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
             {NAV_LINKS.map((link) => {
-              const isActive = activeId === link.id;
+              const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.id}
@@ -322,7 +313,7 @@ export default function Navbar() {
           <div className="border-t border-gray-200/70 dark:border-gray-800/70 px-4 pb-5 pt-3 sm:px-6">
             <ul className="flex flex-col gap-1">
               {NAV_LINKS.map((link) => {
-                const isActive = activeId === link.id;
+                const isActive = pathname === link.href;
                 return (
                   <li key={link.id}>
                     <Link
