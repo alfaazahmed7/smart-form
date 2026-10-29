@@ -80,6 +80,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   // activeId removed; middle links are now page routes tracked via pathname
   const [user, setUser] = useState<User>();
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -129,6 +130,9 @@ export default function Navbar() {
       }
       catch (error) {
         console.error('Failed to fetch user:', error);
+      }
+      finally {
+        setIsAuthLoading(false);
       }
     }
 
@@ -212,7 +216,12 @@ export default function Navbar() {
           {/* Right: theme toggle + login + hamburger */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            {user ? (
+            {isAuthLoading ? (
+              <div
+                aria-hidden="true"
+                className="h-9 w-[108px] animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800"
+              />
+            ) : user ? (
               <div className="relative" ref={userMenuRef}>
                 <button
                   type="button"
