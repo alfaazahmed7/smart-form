@@ -5,11 +5,17 @@
 :root {
   --background: #f7f8fc;
   --foreground: #0b1220;
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
 }
 
 .dark {
   --background: #080b14;
   --foreground: #e8ecf4;
+  --scrollbar-track: #1e293b;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
 }
 
 @theme inline {
@@ -23,12 +29,19 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -45,3 +58,24 @@
     }
   }
 }
+
+/* Subtle, clean scrollbar styling (light + dark) */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
