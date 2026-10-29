@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { getSubmissions } from "@/services/form.services";
 import { Submission } from "@/types/Form";
@@ -146,19 +146,19 @@ export default function SubmissionsClient({
                         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
                             <thead className="bg-gray-50 dark:bg-gray-900/60">
                                 <tr>
-                                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                                    <th className="px-4 py-3 align-middle text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                                         Form
                                     </th>
-                                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                                    <th className="px-4 py-3 align-middle text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                                         Submission ID
                                     </th>
-                                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                                    <th className="px-4 py-3 align-middle text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                                         Submitted
                                     </th>
-                                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                                    <th className="px-4 py-3 align-middle text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                                         Answers
                                     </th>
-                                    <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                                    <th className="px-4 py-3 align-middle text-right text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                                         Actions
                                     </th>
                                 </tr>
@@ -180,19 +180,19 @@ export default function SubmissionsClient({
                                             key={submission.id}
                                             className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/40"
                                         >
-                                            <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
+                                            <td className="px-4 py-3 align-middle text-sm font-medium text-gray-900 dark:text-white">
                                                 {submission.form_title}
                                             </td>
-                                            <td className="px-4 py-3 font-mono text-xs text-gray-500 dark:text-gray-400">
+                                            <td className="whitespace-nowrap px-4 py-3 align-middle font-mono text-xs text-gray-500 dark:text-gray-400">
                                                 {submission.id}
                                             </td>
-                                            <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                                            <td className="px-4 py-3 align-middle text-sm text-gray-600 dark:text-gray-400">
                                                 {formatDate(submission.submitted_at)}
                                             </td>
-                                            <td className="max-w-xs truncate px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                                            <td className="max-w-xs truncate px-4 py-3 align-middle text-sm text-gray-600 dark:text-gray-400">
                                                 {summary || "—"}
                                             </td>
-                                            <td className="px-4 py-3 text-right">
+                                            <td className="px-4 py-3 align-middle text-right">
                                                 <button
                                                     type="button"
                                                     onClick={() => setSelected(submission)}

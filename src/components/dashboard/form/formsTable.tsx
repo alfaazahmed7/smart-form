@@ -1,11 +1,12 @@
-﻿'use client';
+'use client';
 
 import { useState } from "react";
 import { deleteForm, getFormById, getFormForEdit } from "@/services/form.services";
-import { LuEye, LuPencil, LuTrash2, LuArrowLeft, LuLoader, LuTriangleAlert } from "react-icons/lu";
+import { LuEye, LuPencil, LuTrash2, LuArrowLeft, LuLoader, LuTriangleAlert, LuCode } from "react-icons/lu";
 import FormDetailsView, { type FormDetails } from "./formDetailsView";
 import FormEdit from "./formEdit";
 import FormDelete from "./formDelete";
+import FormEmbed, { type EmbedForm } from "./formEmbed";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
@@ -14,6 +15,7 @@ export type FormsTableForm = {
     title: string;
     description: string;
     public_id: string;
+    status?: string;
     created_at: string;
     question_count: number;
 };
@@ -25,7 +27,7 @@ interface FormsTableProps {
 function formatDate(value: string): string {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) {
-        return "—";
+        return "�";
     }
     return date.toLocaleDateString("en-US", {
         month: "short",
@@ -44,6 +46,8 @@ export default function FormsTable({ forms }: FormsTableProps) {
     const [editError, setEditError] = useState<string | null>(null);
 
     const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+
+    const [embedTarget, setEmbedTarget] = useState<EmbedForm | null>(null);
 
     const resetView = () => {
         setSelectedForm(null);
@@ -167,27 +171,39 @@ export default function FormsTable({ forms }: FormsTableProps) {
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
                     <thead className="bg-gray-50 dark:bg-gray-900/60">
                         <tr>
-                            <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Form</th>
-                            <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Form ID</th>
-                            <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Questions</th>
-                            <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Created</th>
-                            <th scope="col" className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Actions</th>
+                            <th scope="col" className="px-4 py-3 align-middle text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Form</th>
+                            <th scope="col" className="px-4 py-3 align-middle text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Form ID</th>
+                            <th scope="col" className="px-4 py-3 align-middle text-center text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Embed</th>
+                            <th scope="col" className="px-4 py-3 align-middle text-center text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Questions</th>
+                            <th scope="col" className="px-4 py-3 align-middle text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Created</th>
+                            <th scope="col" className="px-4 py-3 align-middle text-right text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-800 dark:bg-[#0F172A]">
                         {forms.map((form) => (
                             <tr key={form.id} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/40">
-                                <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
+                                <td className="px-4 py-3 align-middle text-sm font-medium text-gray-900 dark:text-white">
                                     {form.title?.trim() ? form.title : "Untitled form"}
                                 </td>
-                                <td className="px-4 py-3 font-mono text-xs text-gray-500 dark:text-gray-400">
+                                <td className="whitespace-nowrap px-4 py-3 align-middle font-mono text-xs text-gray-500 dark:text-gray-400">
                                     {form.id}
                                 </td>
-                                <td className="px-4 py-3">
+                                <td className="px-4 py-3 align-middle text-center">
+                                    <button
+                                        type="button"
+                                        onClick={() => setEmbedTarget({ id: form.id, title: form.title?.trim() ? form.title : "Untitled form", public_id: form.public_id, status: form.status ?? "published" })}
+                                        aria-label="Embed form"
+                                        title="Embed"
+                                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300 cursor-pointer"
+                                    >
+                                        <LuCode className="h-4 w-4" aria-hidden="true" />
+                                    </button>
+                                </td>
+                                <td className="px-4 py-3 align-middle text-center">
                                     <span className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">{form.question_count}</span>
                                 </td>
-                                <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{formatDate(form.created_at)}</td>
-                                <td className="px-4 py-3 text-right">
+                                <td className="whitespace-nowrap px-4 py-3 align-middle text-sm text-gray-600 dark:text-gray-400">{formatDate(form.created_at)}</td>
+                                <td className="px-4 py-3 align-middle text-right">
                                     <div className="flex items-center justify-end gap-1.5">
                                         <button
                                             type="button"
@@ -223,6 +239,11 @@ export default function FormsTable({ forms }: FormsTableProps) {
                     </tbody>
                 </table>
             </div>
+            <FormEmbed
+                open={!!embedTarget}
+                form={embedTarget}
+                onClose={() => setEmbedTarget(null)}
+            />
             <FormDelete
                 open={!!deleteTarget}
                 formId={deleteTarget?.id ?? null}

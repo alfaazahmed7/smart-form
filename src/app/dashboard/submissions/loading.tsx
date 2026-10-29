@@ -16,39 +16,39 @@ export default function Loading() {
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
                     <thead className="bg-gray-50 dark:bg-gray-900/60">
                         <tr>
-                            <th className="px-4 py-3 text-left">
+                            <th className="px-4 py-3 align-middle text-left">
                                 <div className="h-3 w-10 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
                             </th>
-                            <th className="px-4 py-3 text-left">
+                            <th className="px-4 py-3 align-middle text-left">
                                 <div className="h-3 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
                             </th>
-                            <th className="px-4 py-3 text-left">
+                            <th className="px-4 py-3 align-middle text-left">
                                 <div className="h-3 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
                             </th>
-                            <th className="px-4 py-3 text-left">
+                            <th className="px-4 py-3 align-middle text-left">
                                 <div className="h-3 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
                             </th>
-                            <th className="px-4 py-3 text-right">
+                            <th className="px-4 py-3 align-middle text-right">
                                 <div className="ml-auto h-3 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
                             </th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-800 dark:bg-[#0F172A]">
                         {Array.from({ length: 5 }).map((_, i) => (
-                            <tr key={i}>
-                                <td className="px-4 py-3">
+                            <tr key={i} className="align-middle">
+                                <td className="px-4 py-3 align-middle">
                                     <div className="h-4 w-32 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
                                 </td>
-                                <td className="px-4 py-3">
+                                <td className="whitespace-nowrap px-4 py-3 align-middle">
                                     <div className="h-3 w-28 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
                                 </td>
-                                <td className="px-4 py-3">
+                                <td className="px-4 py-3 align-middle">
                                     <div className="h-4 w-32 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
                                 </td>
-                                <td className="px-4 py-3">
+                                <td className="px-4 py-3 align-middle">
                                     <div className="h-4 w-40 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
                                 </td>
-                                <td className="px-4 py-3 text-right">
+                                <td className="px-4 py-3 align-middle text-right">
                                     <div className="ml-auto h-6 w-24 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
                                 </td>
                             </tr>
