@@ -1,11 +1,10 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import jwt from 'jsonwebtoken';
 import { pool } from "@/lib/db";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
     try {
-        const token = (await cookies()).get('token')?.value;
+        const token = request.cookies.get('token')?.value;
 
         if (!token) {
             return NextResponse.json(
@@ -49,6 +48,13 @@ export async function GET() {
         });
     }
     catch (error) {
+        if (
+            error instanceof Error &&
+            error.message.includes("bail out of prerendering")
+        ) {
+            throw error;
+        }
+
         if (error instanceof jwt.JsonWebTokenError) {
             return NextResponse.json(
                 { message: "Invalid or expired session." },
