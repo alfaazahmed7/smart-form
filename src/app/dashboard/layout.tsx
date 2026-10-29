@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import DashboardSidebar from "@/components/dashboard/dashboardSidebar";
+import DashboardLenisProvider from "@/components/providers/dashboard-lenis-provider";
 
 export default function DashboardLayout({
     children,
@@ -46,9 +47,9 @@ export default function DashboardLayout({
                     </Suspense>
                 </div>
                 <main className="min-w-0 flex-1 lg:h-[calc(100vh-4rem)] lg:self-start">
-                    <div className="h-full overflow-y-auto rounded-2xl border border-gray-200/70 dark:border-gray-800/70 bg-white dark:bg-[#0F172A] shadow-sm p-4 sm:p-6 lg:p-8">
+                    <DashboardLenisProvider className="h-full overflow-y-auto rounded-2xl border border-gray-200/70 dark:border-gray-800/70 bg-white dark:bg-[#0F172A] shadow-sm p-4 sm:p-6 lg:p-8">
                         {children}
-                    </div>
+                    </DashboardLenisProvider>
                 </main>
             </div>
         </div>
