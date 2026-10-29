@@ -119,7 +119,7 @@ export async function GET() {
         }
 
         const userId = decoded.id;
-        console.log(userId);
+        // console.log(userId);
 
         const result = await pool.query(
             `SELECT

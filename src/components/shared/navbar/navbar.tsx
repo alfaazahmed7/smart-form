@@ -199,14 +199,12 @@ export default function Navbar() {
                     }`}
                 >
                   {link.label}
-                  {/* Colorful underline: only beneath active center link */}
+                  {isActive && (
                   <span
                     aria-hidden="true"
-                    className={`absolute inset-x-3.5 -bottom-0.5 h-[3px] rounded-full bg-indigo-600 dark:bg-indigo-400 transition-transform duration-300 ease-out ${isActive
-                      ? "scale-x-100"
-                      : "scale-x-0 group-hover:scale-x-50 group-hover:opacity-40"
-                      }`}
+                    className="absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[3px] w-6 rounded-full bg-indigo-600 dark:bg-indigo-400 transition-transform duration-300 ease-out"
                   />
+                )}
                 </Link>
               );
             })}

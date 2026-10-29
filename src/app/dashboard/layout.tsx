@@ -1,4 +1,4 @@
-﻿import { Suspense } from "react";
+import { Suspense } from "react";
 import DashboardSidebar from "@/components/dashboard/dashboardSidebar";
 
 export default function DashboardLayout({
@@ -45,8 +45,8 @@ export default function DashboardLayout({
                         <DashboardSidebar />
                     </Suspense>
                 </div>
-                <main className="min-w-0 flex-1">
-                    <div className="rounded-2xl border border-gray-200/70 dark:border-gray-800/70 bg-white dark:bg-[#0F172A] shadow-sm p-4 sm:p-6 lg:p-8">
+                <main className="min-w-0 flex-1 lg:h-[calc(100vh-4rem)] lg:self-start">
+                    <div className="h-full overflow-y-auto rounded-2xl border border-gray-200/70 dark:border-gray-800/70 bg-white dark:bg-[#0F172A] shadow-sm p-4 sm:p-6 lg:p-8">
                         {children}
                     </div>
                 </main>

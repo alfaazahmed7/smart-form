@@ -1,7 +1,8 @@
 "use client";
 
+import CustomSelect from "@/components/contact/CustomSelect";
 import { useState } from "react";
-import { LuCheck, LuChevronDown, LuInfo, LuSend, LuShield } from "react-icons/lu";
+import { LuCheck, LuInfo, LuSend, LuShield } from "react-icons/lu";
 
 
 const CATEGORIES = ["Product question", "Technical issue", "Feedback or feature suggestion", "Business or collaboration"];
@@ -86,21 +87,11 @@ export default function ContactPage() {
                             <div className="mt-5">
                                 <label htmlFor="contact-category" className="block text-sm font-medium text-gray-900 dark:text-white">Inquiry category</label>
                                 <div className="relative mt-1.5">
-                                    <select
+                                    <CustomSelect
                                         id="contact-category"
                                         value={category}
-                                        onChange={(e) => setCategory(e.target.value)}
-                                        className="w-full appearance-none rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 pr-10 text-sm text-gray-900 shadow-sm outline-none transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
-                                    >
-                                        {CATEGORIES.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <LuChevronDown
-                                        aria-hidden="true"
-                                        className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500"
+                                        onChange={setCategory}
+                                        options={CATEGORIES}
                                     />
                                 </div>
                             </div>

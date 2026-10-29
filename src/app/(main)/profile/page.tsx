@@ -50,7 +50,8 @@ export default function ProfilePage() {
 
     if (loading) {
         return (
-            <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-gray-50 dark:bg-[#0F172A]">
+                <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
                 <header className="mb-8 space-y-2">
                     <div className="h-8 w-40 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
                     <div className="h-4 w-64 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
@@ -111,22 +112,26 @@ export default function ProfilePage() {
                     </div>
                 </section>
             </div>
+            </div>
         );
     }
 
     if (error || !user) {
         return (
-            <div className="mx-auto max-w-md px-4 py-20 text-center">
+            <div className="min-h-screen bg-gray-50 dark:bg-[#0F172A]">
+                <div className="mx-auto max-w-md px-4 py-20 text-center">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-400"><LuTriangleAlert className="h-6 w-6" aria-hidden="true" /></div>
                 <h1 className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">Profile unavailable</h1>
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{error || "Please sign in to view your profile."}</p>
                 <Link href="/sign-in" className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:ring-offset-[#0F172A]">Sign in <LuArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
             </div>
+            </div>
         );
     }
 
     return (
-        <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gray-50 dark:bg-[#0F172A]">
+            <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
             <header className="mb-8">
                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl dark:text-white">Profile</h1>
                 <p className="mt-1 text-sm text-gray-600 sm:text-base dark:text-gray-400">Your account information and activity at a glance.</p>
@@ -194,6 +199,7 @@ export default function ProfilePage() {
                     </Link>
                 </div>
             </section>
+        </div>
         </div>
     );
 }

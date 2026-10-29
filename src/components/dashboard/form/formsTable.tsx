@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { deleteForm, getFormById, getFormForEdit } from "@/services/form.services";
-import { LuEye, LuPencil, LuTrash2, LuArrowLeft, LuLoader, LuTriangleAlert, LuCode } from "react-icons/lu";
+import { LuEye, LuPencil, LuTrash2, LuArrowLeft, LuLoader, LuTriangleAlert } from "react-icons/lu";
 import FormDetailsView, { type FormDetails } from "./formDetailsView";
 import FormEdit from "./formEdit";
 import FormDelete from "./formDelete";
-import FormEmbed, { type EmbedForm } from "./formEmbed";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
@@ -45,9 +44,6 @@ export default function FormsTable({ forms }: FormsTableProps) {
     const [editError, setEditError] = useState<string | null>(null);
 
     const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
-
-    const [embedTarget, setEmbedTarget] = useState<EmbedForm | null>(null);
-    const [embedLoading, setEmbedLoading] = useState(false);
 
     const resetView = () => {
         setSelectedForm(null);
@@ -102,29 +98,6 @@ export default function FormsTable({ forms }: FormsTableProps) {
     const closeEditor = () => {
         setEditingForm(null);
         setEditError(null);
-    };
-
-    const handleFormEmbed = async (id: string, title: string, publicId: string) => {
-        setEmbedLoading(true);
-        try {
-            const formViewData = await getFormById(id);
-            if (!formViewData?.success || !formViewData?.form) {
-                throw new Error(formViewData?.message || "Failed to retrieve form.");
-            }
-            const f = formViewData.form as FormDetails;
-            setEmbedTarget({
-                id: f.id,
-                title: f.title ?? title,
-                public_id: f.public_id ?? publicId,
-                status: f.status ?? "",
-            });
-        } catch (err) {
-            toast.error(
-                err instanceof Error ? err.message : "Failed to retrieve form."
-            );
-        } finally {
-            setEmbedLoading(false);
-        }
     };
 
     const handleFormDelete = async (id: string) => {
@@ -195,29 +168,26 @@ export default function FormsTable({ forms }: FormsTableProps) {
                     <thead className="bg-gray-50 dark:bg-gray-900/60">
                         <tr>
                             <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Form</th>
+                            <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Form ID</th>
                             <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Questions</th>
                             <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Created</th>
                             <th scope="col" className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-[#0F172A]">
+                    <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-800 dark:bg-[#0F172A]">
                         {forms.map((form) => (
-                            <tr key={form.id} className="transition-colors hover:bg-indigo-50/50 dark:hover:bg-indigo-500/5">
-                                <td className="px-4 py-4 align-top">
-                                    <div className="min-w-0 max-w-md">
-                                        <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">{form.title?.trim() ? form.title : "Untitled form"}</p>
-                                        {form.description?.trim() ? (
-                                            <p className="mt-0.5 line-clamp-2 text-xs text-gray-500 dark:text-gray-400">{form.description}</p>
-                                        ) : (
-                                            <p className="mt-0.5 text-xs italic text-gray-400 dark:text-gray-500">No description</p>
-                                        )}
-                                    </div>
+                            <tr key={form.id} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/40">
+                                <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
+                                    {form.title?.trim() ? form.title : "Untitled form"}
                                 </td>
-                                <td className="px-4 py-4">
+                                <td className="px-4 py-3 font-mono text-xs text-gray-500 dark:text-gray-400">
+                                    {form.id}
+                                </td>
+                                <td className="px-4 py-3">
                                     <span className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">{form.question_count}</span>
                                 </td>
-                                <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-600 dark:text-gray-300">{formatDate(form.created_at)}</td>
-                                <td className="px-4 py-4">
+                                <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{formatDate(form.created_at)}</td>
+                                <td className="px-4 py-3 text-right">
                                     <div className="flex items-center justify-end gap-1.5">
                                         <button
                                             type="button"
@@ -236,16 +206,6 @@ export default function FormsTable({ forms }: FormsTableProps) {
                                             className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300 cursor-pointer"
                                         >
                                             <LuPencil className="h-4 w-4" aria-hidden="true" />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => handleFormEmbed(form.id, form.title, form.public_id)}
-                                            disabled={embedLoading}
-                                            aria-label="Embed form"
-                                            title="Embed"
-                                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:text-gray-400 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300 cursor-pointer"
-                                        >
-                                            <LuCode className="h-4 w-4" aria-hidden="true" />
                                         </button>
                                         <button
                                             type="button"
@@ -269,11 +229,6 @@ export default function FormsTable({ forms }: FormsTableProps) {
                 formTitle={deleteTarget?.title}
                 onClose={() => setDeleteTarget(null)}
                 onDelete={handleFormDelete}
-            />
-            <FormEmbed
-                open={!!embedTarget}
-                form={embedTarget}
-                onClose={() => setEmbedTarget(null)}
             />
         </>
     );
