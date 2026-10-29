@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LuArrowRight, LuCheck, LuHeart, LuLightbulb, LuShield, LuSparkles, LuTarget, LuUsers } from "react-icons/lu";
 
@@ -17,6 +18,12 @@ const PRINCIPLES = [
 ];
 
 const AUDIENCES = ["Small businesses", "Freelancers", "Marketing teams", "Product teams", "Individuals"];
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "About SmartForm, an interactive form builder and chatbot widget platform for creating forms, publishing conversational experiences, collecting responses, and managing submissions.",
+};
 
 export default function AboutPage() {
     return (

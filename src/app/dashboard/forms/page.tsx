@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getFroms } from "@/services/form.server.services";
 import { LuFileText, LuPlus, LuTriangleAlert } from "react-icons/lu";
 import FormsTable, { type FormsTableForm } from "@/components/dashboard/form/formsTable";
 export const instant = false;
+
+export const metadata: Metadata = {
+  title: "My Forms",
+  description: "Manage your SmartForm forms, preview content, and organize submissions.",
+};
 
 const DashboardFormsPage = async () => {
     const result = await getFroms();

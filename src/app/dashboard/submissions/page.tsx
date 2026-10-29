@@ -1,5 +1,11 @@
-﻿import SubmissionsClient from "../../../components/dashboard/submissions/submissionsClient";
+﻿import type { Metadata } from "next";
+import SubmissionsClient from "../../../components/dashboard/submissions/submissionsClient";
 import { getSubmissionsServer } from "@/services/form.server.services";
+
+export const metadata: Metadata = {
+  title: "Submissions",
+  description: "Review and manage submissions collected by your SmartForm forms.",
+};
 
 export default async function DashboardSubmissionsPage() {
     const result = await getSubmissionsServer();

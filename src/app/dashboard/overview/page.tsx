@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getDashboardOverview } from "@/services/form.server.services";
 import SubmissionActivityChart from "@/components/dashboard/overview/submissionActivityChart";
@@ -14,6 +15,11 @@ import {
     LuTrendingUp,
 } from "react-icons/lu";
 export const instant = false;
+
+export const metadata: Metadata = {
+  title: "Dashboard Overview",
+  description: "Dashboard overview of your SmartForm forms, submissions, and recent activity.",
+};
 
 
 

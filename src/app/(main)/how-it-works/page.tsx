@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
     LuArrowRight,
@@ -85,6 +86,12 @@ const USE_CASES = [
             "Capture prospective customer details through an embedded chatbot on your website. Published forms provide a shareable link you can use in campaigns, emails, or social posts.",
     },
 ];
+
+export const metadata: Metadata = {
+  title: "How It Works",
+  description:
+    "Learn how SmartForm works: create forms with up to five questions, customize the chatbot experience, publish and share, collect responses, and manage submissions.",
+};
 
 export default function HowItWorksPage() {
     return (

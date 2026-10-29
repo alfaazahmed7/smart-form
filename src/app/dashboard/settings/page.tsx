@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import {
     LuSettings,
 } from "react-icons/lu";
+
+export const metadata: Metadata = {
+  title: "Settings",
+  description: "Manage your SmartForm account and workspace preferences.",
+};
 
 const DashboardSettingsPage = () => {
     return (
