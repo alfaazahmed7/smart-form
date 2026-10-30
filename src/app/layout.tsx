@@ -4,6 +4,7 @@ import "./globals.css";
 import ThemeProvider from "@/components/providers/theme-provider";
 import LenisProvider from "@/components/providers/lenis-provider";
 import { ToastContainer } from "react-toastify";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,7 +42,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LenisProvider>{children}</LenisProvider>
+          <LenisProvider>
+            {children}
+            <Analytics />
+          </LenisProvider>
           <ToastContainer />
         </ThemeProvider>
       </body>
