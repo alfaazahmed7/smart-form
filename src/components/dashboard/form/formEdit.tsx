@@ -92,6 +92,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
         "questions"
     );
     const tabContainerRef = useRef<HTMLDivElement>(null);
+    const tabScrollRef = useRef<HTMLDivElement>(null);
     const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
     const [indicator, setIndicator] = useState({ left: 0, width: 0 });
 
@@ -123,9 +124,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
         const container = tabContainerRef.current;
         const btn = tabRefs.current[activeIndex];
         if (!container || !btn) return;
-        const cRect = container.getBoundingClientRect();
-        const bRect = btn.getBoundingClientRect();
-        setIndicator({ left: bRect.left - cRect.left, width: bRect.width });
+        setIndicator({ left: btn.offsetLeft, width: btn.offsetWidth });
     }, [activeIndex]);
 
     useEffect(() => {
@@ -133,12 +132,23 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
             const container = tabContainerRef.current;
             const btn = tabRefs.current[activeIndex];
             if (!container || !btn) return;
-            const cRect = container.getBoundingClientRect();
-            const bRect = btn.getBoundingClientRect();
-            setIndicator({ left: bRect.left - cRect.left, width: bRect.width });
+            setIndicator({ left: btn.offsetLeft, width: btn.offsetWidth });
         };
         window.addEventListener("resize", update);
         return () => window.removeEventListener("resize", update);
+    }, [activeIndex]);
+
+    useEffect(() => {
+        const scroll = tabScrollRef.current;
+        const btn = tabRefs.current[activeIndex];
+        if (!scroll || !btn) return;
+        const sRect = scroll.getBoundingClientRect();
+        const bRect = btn.getBoundingClientRect();
+        if (bRect.left < sRect.left) {
+            scroll.scrollBy({ left: bRect.left - sRect.left - 8, behavior: "smooth" });
+        } else if (bRect.right > sRect.right) {
+            scroll.scrollBy({ left: bRect.right - sRect.right + 8, behavior: "smooth" });
+        }
     }, [activeIndex]);
 
     const addQuestion = () => {
@@ -207,7 +217,7 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
     return (
         <div className="space-y-6">
             <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
+                <div className="min-w-0">
                     <button
                         type="button"
                         onClick={onClose}
@@ -216,14 +226,14 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                         <LuArrowLeft className="h-4 w-4" aria-hidden="true" />
                         Back to forms
                     </button>
-                    <h1 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                    <h1 className="break-words text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
                         Edit Form
                     </h1>
                     <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         {title?.trim() ? title : "Untitled form"}
                     </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex shrink-0 items-center gap-2">
                     <StatusBadge status={status} />
                     <button
                         type="button"
@@ -238,8 +248,14 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
 
             <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6 dark:border-gray-800 dark:bg-gray-900/60">
                 <div
+                    ref={tabScrollRef}
+                    className="mb-6 w-full max-w-full overflow-x-auto overscroll-x-contain rounded-xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                >
+                <div
                     ref={tabContainerRef}
-                    className="relative mb-6 flex items-center gap-1 rounded-xl bg-gray-100 p-1 dark:bg-gray-800/60"
+                    className="relative inline-flex min-w-full items-center gap-1 rounded-xl bg-gray-100 p-1 dark:bg-gray-800/60"
+                    role="tablist"
+                    aria-label="Form builder sections"
                 >
                     <span
                         aria-hidden="true"
@@ -256,17 +272,20 @@ export default function FormEdit({ form, onClose }: FormEditProps) {
                                     tabRefs.current[index] = el;
                                 }}
                                 type="button"
+                                role="tab"
+                                aria-selected={isActive}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`relative z-10 inline-flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
+                                className={`relative z-10 inline-flex flex-1 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
                                     ? "text-indigo-700 dark:text-indigo-300"
                                     : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
                                     } cursor-pointer`}
                             >
-                                <Icon className="h-4 w-4" aria-hidden="true" />
+                                <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
                                 {tab.label}
                             </button>
                         );
                     })}
+                </div>
                 </div>
 
                 {activeTab === "questions" ? (

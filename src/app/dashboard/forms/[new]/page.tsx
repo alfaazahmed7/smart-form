@@ -210,7 +210,7 @@ export function SortableQuestionCard({
                 }`}
         >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-                <div className="flex items-center gap-2 text-gray-400">
+                <div className="flex shrink-0 items-center gap-2 text-gray-400">
                     <button
                         type="button"
                         ref={setActivatorNodeRef}
@@ -227,7 +227,7 @@ export function SortableQuestionCard({
                     </span>
                 </div>
 
-                <div className="flex-1 space-y-3">
+                <div className="min-w-0 flex-1 space-y-3">
                     <input
                         type="text"
                         value={question.title}
@@ -240,7 +240,7 @@ export function SortableQuestionCard({
                     />
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                        <div className="relative min-w-0 flex-1 sm:max-w-[14rem]" ref={typeMenuRef}>
+                        <div className="relative w-full min-w-0 sm:flex-1 sm:max-w-[14rem]" ref={typeMenuRef}>
                             <button
                                 type="button"
                                 ref={typeButtonRef}
@@ -342,7 +342,7 @@ export function SortableQuestionCard({
                             <ul className="space-y-2.5">
                                 {question.options.map((option, optionIndex) => (
                                     <li key={optionIndex}>
-                                        <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 shadow-sm transition-all duration-200 hover:border-indigo-300 hover:shadow-md focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20 dark:border-gray-700 dark:bg-gray-900/40 dark:hover:border-indigo-500/50">
+                                        <div className="flex min-w-0 items-center gap-3 rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 shadow-sm transition-all duration-200 hover:border-indigo-300 hover:shadow-md focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20 dark:border-gray-700 dark:bg-gray-900/40 dark:hover:border-indigo-500/50">
                                             <span
                                                 className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-indigo-300 bg-white dark:border-indigo-400/60 dark:bg-gray-900"
                                                 aria-hidden="true"
@@ -359,7 +359,7 @@ export function SortableQuestionCard({
                                                 }
                                                 placeholder={`Option ${optionIndex + 1}`}
                                                 aria-label={`Option ${optionIndex + 1}`}
-                                                className="flex-1 bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-white"
+                                                className="min-w-0 flex-1 bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-white"
                                             />
                                             <button
                                                 type="button"
@@ -434,6 +434,7 @@ export default function NewFormPage() {
         "questions"
     );
     const tabContainerRef = useRef<HTMLDivElement>(null);
+    const tabScrollRef = useRef<HTMLDivElement>(null);
     const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
     const [indicator, setIndicator] = useState({ left: 0, width: 0 });
 
@@ -465,9 +466,7 @@ export default function NewFormPage() {
         const container = tabContainerRef.current;
         const btn = tabRefs.current[activeIndex];
         if (!container || !btn) return;
-        const cRect = container.getBoundingClientRect();
-        const bRect = btn.getBoundingClientRect();
-        setIndicator({ left: bRect.left - cRect.left, width: bRect.width });
+        setIndicator({ left: btn.offsetLeft, width: btn.offsetWidth });
     }, [activeIndex]);
 
     useEffect(() => {
@@ -475,12 +474,23 @@ export default function NewFormPage() {
             const container = tabContainerRef.current;
             const btn = tabRefs.current[activeIndex];
             if (!container || !btn) return;
-            const cRect = container.getBoundingClientRect();
-            const bRect = btn.getBoundingClientRect();
-            setIndicator({ left: bRect.left - cRect.left, width: bRect.width });
+            setIndicator({ left: btn.offsetLeft, width: btn.offsetWidth });
         };
         window.addEventListener("resize", update);
         return () => window.removeEventListener("resize", update);
+    }, [activeIndex]);
+
+    useEffect(() => {
+        const scroll = tabScrollRef.current;
+        const btn = tabRefs.current[activeIndex];
+        if (!scroll || !btn) return;
+        const sRect = scroll.getBoundingClientRect();
+        const bRect = btn.getBoundingClientRect();
+        if (bRect.left < sRect.left) {
+            scroll.scrollBy({ left: bRect.left - sRect.left - 8, behavior: "smooth" });
+        } else if (bRect.right > sRect.right) {
+            scroll.scrollBy({ left: bRect.right - sRect.right + 8, behavior: "smooth" });
+        }
     }, [activeIndex]);
     const handleCreateForm = () => {
         if (!formTitle.trim()) {
@@ -666,51 +676,47 @@ export default function NewFormPage() {
 
             <div
                 ref={(el) => {
-                    tabContainerRef.current = el;
+                    tabScrollRef.current = el;
                 }}
-                className="relative mx-auto flex w-fit max-w-full items-center gap-0.5 rounded-2xl bg-gray-100/80 px-1 py-1.5 dark:bg-gray-800/60"
-                role="tablist"
-                aria-label="Form builder sections"
+                className="mx-auto w-full max-w-full overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
                 <div
-                    className="absolute rounded-xl bg-white shadow-sm transition-all duration-300 ease-out dark:bg-gray-900"
-                    style={{ left: indicator.left, width: indicator.width, top: 6, bottom: 6 }}
-                    aria-hidden="true"
-                />
-                {tabs.map((tab, i) => {
-                    const Icon = tab.icon;
-                    const isActive = tab.id === activeTab;
-                    return (
-                        <button
-                            key={tab.id}
-                            ref={(el) => {
-                                tabRefs.current[i] = el;
-                                if (el && i === activeIndex) {
-                                    const container = tabContainerRef.current;
-                                    if (container) {
-                                        const cRect = container.getBoundingClientRect();
-                                        const bRect = el.getBoundingClientRect();
-                                        setIndicator({
-                                            left: bRect.left - cRect.left,
-                                            width: bRect.width,
-                                        });
-                                    }
-                                }
-                            }}
-                            type="button"
-                            role="tab"
-                            aria-selected={isActive}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`relative z-10 flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-[#0F172A] ${isActive
-                                ? "text-indigo-700 dark:text-indigo-300"
-                                : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                                } cursor-pointer`}
-                        >
-                            <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                            <span className="truncate">{tab.label}</span>
-                        </button>
-                    );
-                })}
+                    ref={(el) => {
+                        tabContainerRef.current = el;
+                    }}
+                    className="relative mx-auto flex w-fit min-w-full items-center gap-0.5 rounded-2xl bg-gray-100/80 px-1 py-1.5 dark:bg-gray-800/60"
+                    role="tablist"
+                    aria-label="Form builder sections"
+                >
+                    <div
+                        className="absolute rounded-xl bg-white shadow-sm transition-all duration-300 ease-out dark:bg-gray-900"
+                        style={{ left: indicator.left, width: indicator.width, top: 6, bottom: 6 }}
+                        aria-hidden="true"
+                    />
+                    {tabs.map((tab, i) => {
+                        const Icon = tab.icon;
+                        const isActive = tab.id === activeTab;
+                        return (
+                            <button
+                                key={tab.id}
+                                ref={(el) => {
+                                    tabRefs.current[i] = el;
+                                }}
+                                type="button"
+                                role="tab"
+                                aria-selected={isActive}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`relative z-10 flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-2 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-indigo-400 dark:focus-visible:ring-offset-[#0F172A] ${isActive
+                                    ? "text-indigo-700 dark:text-indigo-300"
+                                    : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                                    } cursor-pointer`}
+                            >
+                                <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+                                <span>{tab.label}</span>
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
 
             {activeTab === "questions" ? (

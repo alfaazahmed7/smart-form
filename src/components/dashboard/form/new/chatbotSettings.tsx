@@ -73,7 +73,7 @@ function Switch({
     return (
         <label
             htmlFor={id}
-            className="group inline-flex cursor-pointer items-center gap-2.5 text-sm text-gray-700 dark:text-gray-300"
+            className="group inline-flex shrink-0 cursor-pointer items-center gap-2.5 text-sm text-gray-700 dark:text-gray-300"
         >
             <span className="relative inline-flex h-6 w-11 shrink-0 items-center">
                 <input
@@ -256,10 +256,10 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                         </Field>
                     </div>
 
-                    <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50/60 px-4 py-3 dark:border-gray-700 dark:bg-gray-800/40">
-                        <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50/60 px-4 py-3 dark:border-gray-700 dark:bg-gray-800/40">
+                        <div className="flex min-w-0 items-center gap-2">
                             <LuActivity className="h-4 w-4 text-indigo-500 dark:text-indigo-400" aria-hidden="true" />
-                            <div>
+                            <div className="min-w-0">
                                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Show progress indicator
                                 </p>
@@ -295,7 +295,7 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                         description="Primary color used across the chatbot."
                         icon={LuPalette}
                     >
-                        <div className="flex items-center gap-3">
+                        <div className="flex min-w-0 items-center gap-3">
                             <input
                                 id="theme-color"
                                 type="color"
@@ -313,7 +313,7 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                                 onChange={(e) =>
                                     onChange({ themeColor: e.target.value })
                                 }
-                                className={inputClass + " flex-1 font-mono"}
+className={inputClass + " min-w-0 flex-1 font-mono"}
                                 placeholder="#6366F1"
                             />
                         </div>
@@ -369,10 +369,10 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                         </Field>
                     </div>
 
-                    <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50/60 px-4 py-3 dark:border-gray-700 dark:bg-gray-800/40">
-                        <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50/60 px-4 py-3 dark:border-gray-700 dark:bg-gray-800/40">
+                        <div className="flex min-w-0 items-center gap-2">
                             <LuSparkles className="h-4 w-4 text-indigo-500 dark:text-indigo-400" aria-hidden="true" />
-                            <div>
+                            <div className="min-w-0">
                                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Show SmartForm branding
                                 </p>
@@ -438,10 +438,10 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                         />
                     </Field>
 
-                    <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50/60 px-4 py-3 dark:border-gray-700 dark:bg-gray-800/40">
-                        <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50/60 px-4 py-3 dark:border-gray-700 dark:bg-gray-800/40">
+                        <div className="flex min-w-0 items-center gap-2">
                             <LuRotateCcw className="h-4 w-4 text-indigo-500 dark:text-indigo-400" aria-hidden="true" />
-                            <div>
+                            <div className="min-w-0">
                                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Allow visitors to restart
                                 </p>
@@ -489,7 +489,7 @@ export default function ChatbotSettings({ settings, onChange }: ChatbotSettingsP
                                     </div>
                                     <div className="space-y-2 p-3">
                                         <div
-                                            className="max-w-[85%] rounded-2xl rounded-tl-sm px-3 py-2 text-xs text-white"
+                                            className="max-w-[85%] break-words rounded-2xl rounded-tl-sm px-3 py-2 text-xs text-white"
                                             style={{ backgroundColor: settings.themeColor }}
                                         >
                                             {settings.welcomeMessage}

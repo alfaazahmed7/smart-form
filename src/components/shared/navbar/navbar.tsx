@@ -83,6 +83,7 @@ export default function Navbar() {
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const userMenuMobileRef = useRef<HTMLDivElement>(null);
 
   /* Sticky scroll effect */
   useEffect(() => {
@@ -111,9 +112,19 @@ export default function Navbar() {
 
   /* Close mobile menu when switching to desktop viewport */
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
     const onChange = () => {
       if (mediaQuery.matches) setOpen(false);
+    };
+    mediaQuery.addEventListener("change", onChange);
+    return () => mediaQuery.removeEventListener("change", onChange);
+  }, []);
+
+  /* Close user menu when switching between mobile and desktop viewport */
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 640px)");
+    const onChange = () => {
+      setUserMenuOpen(false);
     };
     mediaQuery.addEventListener("change", onChange);
     return () => mediaQuery.removeEventListener("change", onChange);
@@ -143,7 +154,9 @@ export default function Navbar() {
   useEffect(() => {
     if (!userMenuOpen) return;
     const onClick = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+      const inDesktop = userMenuRef.current?.contains(event.target as Node) ?? false;
+      const inMobile = userMenuMobileRef.current?.contains(event.target as Node) ?? false;
+      if (!inDesktop && !inMobile) {
         setUserMenuOpen(false);
       }
     };
@@ -188,7 +201,7 @@ export default function Navbar() {
           </div>
 
           {/* Center: navigation links (desktop) */}
-          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
+          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -222,7 +235,7 @@ export default function Navbar() {
                 className="h-9 w-[108px] animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800"
               />
             ) : user ? (
-              <div className="relative" ref={userMenuRef}>
+              <div className="relative hidden sm:flex" ref={userMenuRef}>
                 <button
                   type="button"
                   onClick={() => setUserMenuOpen((v) => !v)}
@@ -286,11 +299,14 @@ export default function Navbar() {
             {/* Hamburger (mobile) */}
             <button
               type="button"
-              onClick={() => setOpen((value) => !value)}
+              onClick={() => {
+                setOpen((value) => !value);
+                setUserMenuOpen(false);
+              }}
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? "Close menu" : "Open menu"}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-300 shadow-sm transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 md:hidden"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 text-gray-600 dark:text-gray-300 shadow-sm transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 lg:hidden"
             >
               <span className="relative block h-[18px] w-[18px]">
                 <span
@@ -313,7 +329,7 @@ export default function Navbar() {
         {/* Mobile menu */}
         <div
           id="mobile-menu"
-          className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out md:hidden ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out lg:hidden ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
             }`}
         >
           <div className="border-t border-gray-200/70 dark:border-gray-800/70 px-4 pb-5 pt-3 sm:px-6">
@@ -343,6 +359,71 @@ export default function Navbar() {
                 );
               })}
             </ul>
+
+            {/* Mobile profile trigger (shown below sm) */}
+            {user && (
+              <div className="border-t border-gray-200/70 dark:border-gray-800/70 pt-4 pb-2 sm:hidden">
+                <div ref={userMenuMobileRef}>
+                  <button
+                    type="button"
+                    onClick={() => setUserMenuOpen((v) => !v)}
+                    aria-haspopup="menu"
+                    aria-expanded={userMenuOpen}
+                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-[15px] font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:focus-visible:ring-indigo-400"
+                  >
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400">
+                      <LuUser className="h-3.5 w-3.5" aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0 truncate">{user.name}</span>
+                    <LuChevronDown
+                      className={`h-3.5 w-3.5 transition-transform duration-200 ml-auto ${userMenuOpen ? "rotate-180" : ""}`}
+                      aria-hidden="true"
+                    />
+                  </button>
+
+                  {userMenuOpen && (
+                    <div className="mt-1 space-y-1 px-1">
+                      <Link
+                        href="/profile"
+                        onClick={() => {
+                          setUserMenuOpen(false);
+                          setOpen(false);
+                        }}
+                        role="menuitem"
+                        className="flex w-full items-center gap-2.5 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-200 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
+                        <LuUser className="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                        Profile
+                      </Link>
+                      <Link
+                        href="/dashboard/overview"
+                        onClick={() => {
+                          setUserMenuOpen(false);
+                          setOpen(false);
+                        }}
+                        role="menuitem"
+                        className="flex w-full items-center gap-2.5 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-200 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
+                        <LuLayoutDashboard className="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                        Dashboard
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleLogout();
+                          setOpen(false);
+                        }}
+                        role="menuitem"
+                        className="flex w-full items-center gap-2.5 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-200 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
+                        <LuLogOut className="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -233,12 +233,12 @@ export default function FormPreview(props: FormPreviewProps) {
     return (
         <div className="space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="space-y-1">
+                <div className="min-w-0 space-y-1">
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                         Live Preview
                     </span>
-                    <h2 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
+                    <h2 className="break-words text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
                         {title?.trim() ? title : "Untitled form"}
                     </h2>
                     {description?.trim() ? (
@@ -323,7 +323,7 @@ export default function FormPreview(props: FormPreviewProps) {
                                         }`}
                                 >
                                     <div
-                                        className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${m.from === "user"
+                                        className={`max-w-[85%] break-words rounded-2xl px-3 py-2 text-sm leading-relaxed ${m.from === "user"
                                                 ? "text-white"
                                                 : "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
                                             }`}
